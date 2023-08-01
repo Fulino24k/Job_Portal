@@ -27,6 +27,12 @@
         .options-employee button:hover {
         background-color: #3e8e41;
         }
+        table, td, th {
+            border: 1px solid;
+        }
+        table {
+            border-collapse: collapse;
+        }
     </style>
     <body>
         <h1> Welcome to application portal for the BEST company! </h1>
@@ -54,7 +60,7 @@
                 var x = document.getElementById("reset");
                 var y = document.getElementById("resetJob");
                 var a = document.getElementById("insert");
-                var b = document.getElementById("update");
+                var b = document.getElementById("insertJob");
                 if (x.style.display === "none") {
                     if (show) {
                         a.style.display = "none";
@@ -73,14 +79,15 @@
                 var y = document.getElementById("insertJob");
                 var a = document.getElementById("reset");
                 var b = document.getElementById("resetJob");
-                if (y.style.display === "none") {
+                if (x.style.display === "none") {
                     if (show) {
                         a.style.display = "none";
                         b.style.display = "none";
                     }
-                    //x.style.display = "block";
+                    x.style.display = "block";
                     y.style.display = "block";
                 } else {
+                    x.style.display = "none";
                     y.style.display = "none";
                 }
                 show = true;
@@ -198,8 +205,10 @@
             echo "<table>";
             echo "<tr><th>ID</th><th>Name</th></tr>";
 
+            // style='border:1px solid black;border-collapse:collapse'
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
+                echo "<tr><td>";
+                echo $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
             }
             echo "</table>";
         }
@@ -224,8 +233,22 @@
             executePlainSQL("CREATE TABLE demoTable (id int PRIMARY KEY, name char(30))");
             OCICommit($db_conn);
         }
-
+        
+        
         function handleResetJobRequest() {
+            $jobTuple1 = array (
+                ":bind1" => "Assistant Chef", ":bind2" => "00001", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
+            $jobTuple2 = array (
+                ":bind1" => "Assistant Chef", ":bind2" => "00002", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
+            $jobTuple3 = array (
+                ":bind1" => "Assistant Chef", ":bind2" => "00003", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
+            $jobTuple4 = array (
+                ":bind1" => "Assistant Chef", ":bind2" => "00004", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
+            $jobTuple5 = array (
+                ":bind1" => "Assistant Chef", ":bind2" => "00005", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
+            $alltuples = array (
+                $jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5 
+            );
             global $db_conn;
             // Drop old table
             executePlainSQL("DROP TABLE jobTable");
@@ -233,6 +256,9 @@
             // Create new table
             echo "<br> creating new job table <br>";
             executePlainSQL("CREATE TABLE jobTable (position char(30), referenceID char(30) PRIMARY KEY, spots_left int, annual_salary int, work_type char(30))");
+            echo "<br> new jobTable created <br>";
+            executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+            echo "<br> default tuples inserted <br>";
             OCICommit($db_conn);   
         }
         
@@ -252,6 +278,8 @@
             executeBoundSQL("insert into demoTable values (:bind1, :bind2)", $alltuples);
             OCICommit($db_conn);
         }
+
+        
         function handleInsertJobRequest() {
             global $db_conn;
 
