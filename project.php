@@ -241,7 +241,8 @@
             $jobTuple3 = array (":bind1" => "Assistant Chef", ":bind2" => "00003", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
             $jobTuple4 = array (":bind1" => "Assistant Chef", ":bind2" => "00004", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
             $jobTuple5 = array (":bind1" => "Assistant Chef", ":bind2" => "00005", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $alltuples = array ($jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5);
+            $jobTuple6 = array (":bind1" => "Assistant Chef", ":bind2" => "00006", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
+            $alltuples = array ($jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5, $jobTuple5);
             global $db_conn;
             // Drop old table
             executePlainSQL("DROP TABLE jobTable");
