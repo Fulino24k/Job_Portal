@@ -236,13 +236,14 @@
         
         
         function handleResetJobRequest() {
-            $jobTuple1 = array ( ":bind1" => "Assistant Chef", ":bind2" => "00001", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $jobTuple2 = array (":bind1" => "Assistant Chef", ":bind2" => "00002", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $jobTuple3 = array (":bind1" => "Assistant Chef", ":bind2" => "00003", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $jobTuple4 = array (":bind1" => "Assistant Chef", ":bind2" => "00004", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $jobTuple5 = array (":bind1" => "Assistant Chef", ":bind2" => "00005", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $jobTuple6 = array (":bind1" => "Assistant Chef", ":bind2" => "00006", ":bind3" => "5",b":bind4" => "40594", ":bind5" => "Full");
-            $alltuples = array ($jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5, $jobTuple5);
+            $jobTuple1 = array (":bind1" => "Assistant Chef", ":bind2" => "00001", ":bind3" => "5",b":bind4" => "40534", ":bind5" => "Part");
+            $jobTuple2 = array (":bind1" => "Head Janitor", ":bind2" => "00002", ":bind3" => "2",b":bind4" => "49998", ":bind5" => "Full");
+            $jobTuple3 = array (":bind1" => "Software Enginner", ":bind2" => "00003", ":bind3" => "20",b":bind4" => "90615", ":bind5" => "Full");
+            $jobTuple4 = array (":bind1" => "Customer Service Rep", ":bind2" => "00004", ":bind3" => "20",b":bind4" => "62983", ":bind5" => "Full");
+            $jobTuple5 = array (":bind1" => "Database Intern", ":bind2" => "00005", ":bind3" => "30",b":bind4" => "0", ":bind5" => "Part");
+            $jobTuple6 = array (":bind1" => "Marketing Analyst", ":bind2" => "00006", ":bind3" => "10",b":bind4" => "76526", ":bind5" => "Part");
+            $jobTuple7 = array (":bind1" => "Sales Assistant", ":bind2" => "00007", ":bind3" => "15",b":bind4" => "54219", ":bind5" => "Part");
+            $allJobtuples = array ($jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5, $jobTuple6, $jobTuple7);
             global $db_conn;
             // Drop old table
             executePlainSQL("DROP TABLE jobTable");
@@ -251,7 +252,7 @@
             echo "<br> creating new job table <br>";
             executePlainSQL("CREATE TABLE jobTable (position char(30), referenceID char(30) PRIMARY KEY, spots_left int, annual_salary int, work_type char(30))");
             echo "<br> new jobTable created <br>";
-            executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
+            executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $allJobtuples);
             echo "<br> default tuples inserted <br>";
             OCICommit($db_conn);   
         }
