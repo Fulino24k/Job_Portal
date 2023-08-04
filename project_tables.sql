@@ -254,7 +254,7 @@ FOREIGN KEY(applyReferenceID) REFERENCES JR3_ID_SpotNum(ReferenceID)
 
 grant select on AppliesFor to public;
 
--- INSERTION STATEMENTS
+-- INSERTION STATEMENTS (Some commented out due to lack of space)
 
 -- Applicant
 
@@ -307,20 +307,20 @@ VALUES(4, 2122023, 72444);
 INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
 VALUES(5, 11112011, 67671);
 
-INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
-VALUES(6, 12192001, 28485);
+-- INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
+-- VALUES(6, 12192001, 28485);
 
-INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
-VALUES(7, 11302000, 57838);
+-- INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
+-- VALUES(7, 11302000, 57838);
 
-INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
-VALUES(8, 3042013, 45123);
+-- INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
+-- VALUES(8, 3042013, 45123);
 
-INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
-VALUES(9, 2122024, 72444);
+-- INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
+-- VALUES(9, 2122024, 72444);
 
-INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
-VALUES(10, 11112012, 67671);
+-- INSERT INTO StoreApplication(job_app_num, ApplyDate, account_acc_num_sa)
+-- VALUES(10, 11112012, 67671);
 
 -- Accept Deny Offer
 
@@ -356,8 +356,8 @@ VALUES(4444, 'Jeff Bezos');
 INSERT INTO R3_EmployeeNumName(employee_num, EmpName)
 VALUES(5555, 'Tim Cook');
 
-INSERT INTO R3_EmployeeNumName(employee_num, EmpName)
-VALUES(6666, 'Jack Ma');
+-- INSERT INTO R3_EmployeeNumName(employee_num, EmpName)
+-- VALUES(6666, 'Jack Ma');
 
 -- Interview
 
@@ -376,20 +376,20 @@ VALUES(11202023, 'Elon Musk', 'Aaron');
 INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11092023, 'Jeff Bezos', 'Dani');
 
-INSERT INTO Interview(date_, interviewer, interviewee)
-VALUES(11092023, 'Jeff Bezos', 'Aaron');
+-- INSERT INTO Interview(date_, interviewer, interviewee)
+-- VALUES(11092023, 'Jeff Bezos', 'Aaron');
 
-INSERT INTO Interview(date_, interviewer, interviewee)
-VALUES(12012023, 'Tim Cook', 'Gittu');
+-- INSERT INTO Interview(date_, interviewer, interviewee)
+-- VALUES(12012023, 'Tim Cook', 'Gittu');
 
-INSERT INTO Interview(date_, interviewer, interviewee)
-VALUES(12212023, 'Tim Cook', 'Yan');
+-- INSERT INTO Interview(date_, interviewer, interviewee)
+-- VALUES(12212023, 'Tim Cook', 'Yan');
 
-INSERT INTO Interview(date_, interviewer, interviewee)
-VALUES(11042023, 'Jack Ma', 'Sean');
+-- INSERT INTO Interview(date_, interviewer, interviewee)
+-- VALUES(11042023, 'Jack Ma', 'Sean');
 
-INSERT INTO Interview(date_, interviewer, interviewee)
-VALUES(11042023, 'Jack Ma', 'Yan');
+-- INSERT INTO Interview(date_, interviewer, interviewee)
+-- VALUES(11042023, 'Jack Ma', 'Yan');
 
 -- JR3 Reference ID & Number of Spots
 
@@ -408,11 +408,11 @@ VALUES(4, 20);
 INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
 VALUES(5, 30);
 
-INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
-VALUES(6, 10);
+-- INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
+-- VALUES(6, 10);
 
-INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
-VALUES(7, 15);
+-- INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
+-- VALUES(7, 15);
 
 -- R1 (Position & Name of Employer)
 
@@ -431,8 +431,8 @@ VALUES('Sales', 'Jeff Bezos', 2);
 INSERT INTO R1_PositionNameTeam(PrimaryPosition, EmpName, Team)
 VALUES('Cook', 'Tim Cook', 3);
 
-INSERT INTO R1_PositionNameTeam(PrimaryPosition, EmpName, Team)
-VALUES('Finance', 'Jack Ma', 5);
+-- INSERT INTO R1_PositionNameTeam(PrimaryPosition, EmpName, Team)
+-- VALUES('Finance', 'Jack Ma', 5);
 
 -- R5 Employer Number and Position
 
@@ -451,8 +451,8 @@ VALUES(4444, 'Sales');
 INSERT INTO R5_EmployeeNumPosition(employee_num, PrimaryPosition)
 VALUES(5555, 'Cook');
 
-INSERT INTO R5_EmployeeNumPosition(employee_num, PrimaryPosition)
-VALUES(6666, 'Finance');
+-- INSERT INTO R5_EmployeeNumPosition(employee_num, PrimaryPosition)
+-- VALUES(6666, 'Finance');
 
 -- R7 Employer Email and Phone
 
@@ -471,8 +471,8 @@ VALUES('Jeff@gmail.com', 2365838384);
 INSERT INTO R7_EmailPhone(emp_email, emp_phone_num)
 VALUES('whoLetTimCook@gmail.com', 6045818385);
 
-INSERT INTO R7_EmailPhone(emp_email, emp_phone_num)
-VALUES('jack@gmail.com', 2365838384);
+-- INSERT INTO R7_EmailPhone(emp_email, emp_phone_num)
+-- VALUES('jack@gmail.com', 2365838384);
 
 -- R8 Employer Number and Email
 
@@ -491,8 +491,8 @@ VALUES(4444, 'Jeff@gmail.com');
 INSERT INTO R8_EmployeeNumEmail(emp_phone_num, emp_email)
 VALUES(5555, 'whoLetTimCook@gmail.com');
 
-INSERT INTO R8_EmployeeNumEmail(emp_phone_num, emp_email)
-VALUES(6666, 'jack@gmail.com');
+-- INSERT INTO R8_EmployeeNumEmail(emp_phone_num, emp_email)
+-- VALUES(6666, 'jack@gmail.com');
 
 -- Produce Application
 
@@ -528,20 +528,20 @@ VALUES(4, 'Hi my name is Gittu and please recruit me.');
 INSERT INTO CoverLetter(job_app_num_cv, introduction)
 VALUES(5, 'Hi my name is Yan and please recruit me.');
 
-INSERT INTO CoverLetter(job_app_num_cv, introduction)
-VALUES(6, 'Hi my name is Sean and please recruit me.');
+-- INSERT INTO CoverLetter(job_app_num_cv, introduction)
+-- VALUES(6, 'Hi my name is Sean and please recruit me.');
 
-INSERT INTO CoverLetter(job_app_num_cv, introduction)
-VALUES(7, 'Hi my name is Dani and please recruit me.');
+-- INSERT INTO CoverLetter(job_app_num_cv, introduction)
+-- VALUES(7, 'Hi my name is Dani and please recruit me.');
 
-INSERT INTO CoverLetter(job_app_num_cv, introduction)
-VALUES(8, 'Hi my name is Aaron and please recruit me.');
+-- INSERT INTO CoverLetter(job_app_num_cv, introduction)
+-- VALUES(8, 'Hi my name is Aaron and please recruit me.');
 
-INSERT INTO CoverLetter(job_app_num_cv, introduction)
-VALUES(9, 'Hi my name is Gittu and please recruit me.');
+-- INSERT INTO CoverLetter(job_app_num_cv, introduction)
+-- VALUES(9, 'Hi my name is Gittu and please recruit me.');
 
-INSERT INTO CoverLetter(job_app_num_cv, introduction)
-VALUES(10, 'Hi my name is Yan and please recruit me.');
+-- INSERT INTO CoverLetter(job_app_num_cv, introduction)
+-- VALUES(10, 'Hi my name is Yan and please recruit me.');
 
 -- Resumes 
 
@@ -560,20 +560,20 @@ VALUES(4, 'Gittu', '50 years in UBC', '1 Doctorate');
 INSERT INTO Resumes(job_num, education, experience, resName)
 VALUES(5, 'Yan', '50 years in UBC', '5 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
-VALUES(6, 'Sean', '50 years in Google', '2 Bachelors');
+-- INSERT INTO Resumes(job_num, education, experience, resName)
+-- VALUES(6, 'Sean', '50 years in Google', '2 Bachelors');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
-VALUES(7, 'Dani', '50 years in Microsoft', '3 Masters');
+-- INSERT INTO Resumes(job_num, education, experience, resName)
+-- VALUES(7, 'Dani', '50 years in Microsoft', '3 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
-VALUES(8, 'Aaron', '50 years in Tesla', '1 Bachelor, 1 Masters');
+-- INSERT INTO Resumes(job_num, education, experience, resName)
+-- VALUES(8, 'Aaron', '50 years in Tesla', '1 Bachelor, 1 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
-VALUES(9, 'Gittu', '50 years in UBC', '1 Doctorate');
+-- INSERT INTO Resumes(job_num, education, experience, resName)
+-- VALUES(9, 'Gittu', '50 years in UBC', '1 Doctorate');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
-VALUES(10, 'Yan', '50 years in UBC', '5 Masters');
+-- INSERT INTO Resumes(job_num, education, experience, resName)
+-- VALUES(10, 'Yan', '50 years in UBC', '5 Masters');
 
 -- Draft
 
@@ -609,11 +609,11 @@ VALUES(4, 4444);
 INSERT INTO Creates(job_referID, emp_employee_num)
 VALUES(5, 5555);
 
-INSERT INTO Creates(job_referID, emp_employee_num)
-VALUES(6, 6666);
+-- INSERT INTO Creates(job_referID, emp_employee_num)
+-- VALUES(6, 6666);
 
-INSERT INTO Creates(job_referID, emp_employee_num)
-VALUES(7, 6666);
+-- INSERT INTO Creates(job_referID, emp_employee_num)
+-- VALUES(7, 6666);
 
 -- Supervisor
 
@@ -666,20 +666,20 @@ VALUES(3333, 11202023, 'Elon Musk', 'Aaron');
 INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(4444, 11092023, 'Jeff Bezos', 'Dani');
 
-INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
-VALUES(4444, 11092023, 'Jeff Bezos', 'Aaron');
+-- INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
+-- VALUES(4444, 11092023, 'Jeff Bezos', 'Aaron');
 
-INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
-VALUES(5555, 12012023, 'Tim Cook', 'Gittu');
+-- INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
+-- VALUES(5555, 12012023, 'Tim Cook', 'Gittu');
 
-INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
-VALUES(5555, 12212023, 'Tim Cook', 'Yan');
+-- INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
+-- VALUES(5555, 12212023, 'Tim Cook', 'Yan');
 
-INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
-VALUES(6666, 11042023, 'Jack Ma', 'Sean');
+-- INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
+-- VALUES(6666, 11042023, 'Jack Ma', 'Sean');
 
-INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
-VALUES(6666, 11042023, 'Jack Ma', 'Yan');
+-- INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
+-- VALUES(6666, 11042023, 'Jack Ma', 'Yan');
 
 -- Reviews
 
@@ -698,11 +698,11 @@ VALUES(4, 3333);
 INSERT INTO Reviews(job_app_num, emp_employee_num)
 VALUES(5, 5555);
 
-INSERT INTO Reviews(job_app_num, emp_employee_num)
-VALUES(6, 1111);
+-- INSERT INTO Reviews(job_app_num, emp_employee_num)
+-- VALUES(6, 1111);
 
-INSERT INTO Reviews(job_app_num, emp_employee_num)
-VALUES(7, 6666);
+-- INSERT INTO Reviews(job_app_num, emp_employee_num)
+-- VALUES(7, 6666);
 
 -- JR1 Schedule & Salary
 
@@ -721,11 +721,11 @@ VALUES('WTHFS', 62983);
 INSERT INTO JR1_ScheduleSalary(ShiftSchedule, Salary)
 VALUES('On-Call', 10000);
 
-INSERT INTO JR1_ScheduleSalary(ShiftSchedule, Salary)
-VALUES('TTH', 76526);
+-- INSERT INTO JR1_ScheduleSalary(ShiftSchedule, Salary)
+-- VALUES('TTH', 76526);
 
-INSERT INTO JR1_ScheduleSalary(ShiftSchedule, Salary)
-VALUES('MWF', 54219);
+-- INSERT INTO JR1_ScheduleSalary(ShiftSchedule, Salary)
+-- VALUES('MWF', 54219);
 
 -- JR5 Position Name & Duties
 
@@ -744,11 +744,11 @@ VALUES('Meal Prep', 'Assistant Chef');
 INSERT INTO JR5_PositionDuties(Duties, PositionName)
 VALUES('Answer Calls', 'Customer Service Rep');
 
-INSERT INTO JR5_PositionDuties(Duties, PositionName)
-VALUES('Data Analysis', 'Financial Analyst');
+-- INSERT INTO JR5_PositionDuties(Duties, PositionName)
+-- VALUES('Data Analysis', 'Financial Analyst');
 
-INSERT INTO JR5_PositionDuties(Duties, PositionName)
-VALUES('SQL Queries', 'Database Intern');
+-- INSERT INTO JR5_PositionDuties(Duties, PositionName)
+-- VALUES('SQL Queries', 'Database Intern');
 
 -- JR7 Qualifications & Duties
 
@@ -767,11 +767,11 @@ VALUES('Proficiency in Food Handling', 'Meal Prep');
 INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
 VALUES('Customer Service Experience', 'Answer Calls');
 
-INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
-VALUES('Data Analyst Experience', 'Data Analysis');
+-- INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
+-- VALUES('Data Analyst Experience', 'Data Analysis');
 
-INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
-VALUES('SQL Certificate', 'SQL Queries');
+-- INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
+-- VALUES('SQL Certificate', 'SQL Queries');
 
 -- JR9 ReferenceID & Qualifications
 
@@ -790,11 +790,11 @@ VALUES(4, 'Proficiency in Food Handling');
 INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
 VALUES(5, 'Customer Service Experience');
 
-INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
-VALUES(6, 'Data Analyst Experience');
+-- INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
+-- VALUES(6, 'Data Analyst Experience');
 
-INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
-VALUES(7, 'SQL Certificate');
+-- INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
+-- VALUES(7, 'SQL Certificate');
 
 -- JR10 ReferenceID & Schedule
 
@@ -813,11 +813,11 @@ VALUES(4, 'WTHFS');
 INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
 VALUES(5, 'On-Call');
 
-INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
-VALUES(6, 'TTH');
+-- INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
+-- VALUES(6, 'TTH');
 
-INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
-VALUES(7, 'MWF');
+-- INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
+-- VALUES(7, 'MWF');
 
 -- AppliesFor
 
@@ -836,8 +836,8 @@ VALUES('gittu@gmail.com', 4);
 INSERT INTO AppliesFor(applyEmail, applyReferenceID)
 VALUES('yan@gmail.com', 5);
 
-INSERT INTO AppliesFor(applyEmail, applyReferenceID)
-VALUES('sean@gmail.com', 6);
+-- INSERT INTO AppliesFor(applyEmail, applyReferenceID)
+-- VALUES('sean@gmail.com', 6);
 
-INSERT INTO AppliesFor(applyEmail, applyReferenceID)
-VALUES('dani@gmail.com', 7);
+-- INSERT INTO AppliesFor(applyEmail, applyReferenceID)
+-- VALUES('dani@gmail.com', 7);
