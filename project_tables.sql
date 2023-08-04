@@ -5,7 +5,7 @@ drop table CreateAccount;
 drop table StoreApplication;
 drop table ProduceApplication;
 drop table CoverLetter;
-drop table Resume;
+drop table Resumes;
 drop table AppliesFor;
 drop table AcceptDenyOffer;
 drop table Draft;
@@ -36,6 +36,8 @@ phone_num INTEGER UNIQUE,
 address CHAR(30)
 );	
 
+grant select on Applicant to public;
+
 -- Employer Entities R1 - R8
 
 CREATE TABLE R1_PositionNameTeam(
@@ -43,62 +45,83 @@ PrimaryPosition CHAR(30),
 EmpName CHAR(30),
 Team CHAR(30),
 PRIMARY KEY(PrimaryPosition, EmpName)
-)
+);
+
+grant select on R1_PositionNameTeam to public;
+
 
 CREATE TABLE R3_EmployeeNumName(
 employee_num INTEGER PRIMARY KEY,
 EmpName CHAR(30)
-)
+);
+
+grant select on R3_EmployeeNumName to public;
 
 CREATE TABLE R5_EmployeeNumPosition(
 employee_num INTEGER PRIMARY KEY,
 PrimaryPosition CHAR(30)
-)
+);
+
+grant select on R5_EmployeeNumPosition to public;
 
 CREATE TABLE R7_EmailPhone(
 emp_email CHAR(30) PRIMARY KEY,
-emp_phone_num: INTEGER,
-)
+emp_phone_num INTEGER,
+);
+
+grant select on R7_EmailPhone to public;
 
 CREATE TABLE R8_EmployeeNumEmail(
 emp_phone_num INTEGER,
 emp_email CHAR(30),
 PRIMARY KEY(emp_phone_num, emp_email)
-)
+);
+
+grant select on R8_EmployeeNumEmail to public;
 
 CREATE TABLE CreateAccount(
 applicant_email CHAR(30),
 account_acc_num INTEGER  PRIMARY KEY,
-FOREIGN KEY (applicant_email) REFERENCES Applicant(applicant_mail)
+FOREIGN KEY(applicant_email) REFERENCES Applicant(applicant_email)
 );
 
+grant select on CreateAccount to public;
+
 CREATE TABLE StoreApplication(
-job_app_num INTEGER PRIMARY KEY ,
+job_app_num INTEGER PRIMARY KEY,
 ApplyDate INTEGER,
-account_acc_num INTEGER,
-FOREIGN KEY (account-acc#) REFERENCES CreateAccount(account_acc_num)
+account_acc_num_sa INTEGER,
+FOREIGN KEY(account_acc_num_sa) REFERENCES CreateAccount(account_acc_num)
 );
+
+grant select on StoreApplication to public;
 
 CREATE TABLE ProduceApplication(
 produceApp_num INTEGER PRIMARY KEY,
 ApplyDate INTEGER,
 produceEmail CHAR(30), 
 FOREIGN KEY(produceEmail) REFERENCES Applicant(applicant_email)
-)
-
-CREATE TABLE CoverLetter(
-job_app_num CHAR(30) PRIMARY KEY,
-introduction CHAR(300),
-FOREIGN KEY(job_app_num) REFERENCES StoreApplication(job_app_num)
 );
 
-CREATE TABLE Resume(
-job_app_num CHAR(30) PRIMARY KEY,
+grant select on ProduceApplication to public;
+
+CREATE TABLE CoverLetter(
+job_app_num_cv INTEGER PRIMARY KEY,
+introduction CHAR(300),
+FOREIGN KEY(job_app_num_cv) REFERENCES StoreApplication(job_app_num)
+);
+
+grant select on CoverLetter to public;
+
+CREATE TABLE Resumes(
+job_num INTEGER PRIMARY KEY,
 education CHAR(300),
 experience CHAR(300),
 resName CHAR(30),
-FOREIGN KEY(job_app_num) REFERENCES StoreApplication(job_app_num)
+FOREIGN KEY(job_num) REFERENCES StoreApplication(job_app_num)
 );
+
+grant select on Resumes to public;
 
 CREATE TABLE AcceptDenyOffer(
 offer_employee_num INTEGER PRIMARY KEY,
@@ -106,6 +129,8 @@ StartDate INTEGER,
 applicant_email CHAR(30),
 FOREIGN KEY(applicant_email) REFERENCES Applicant(applicant_email)
 );
+
+grant select on AcceptDenyOffer to public;
 
 CREATE TABLE Draft(
 offer_employee_num INTEGER,
@@ -115,85 +140,111 @@ FOREIGN KEY(offer_employee_num) REFERENCES AcceptDenyOffer(offer_employee_num)
 FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
 
-CREATE TABLE Creates(
-job_referID INTEGER,
-emp_employee_num INTEGER,
-PRIMARY KEY(job_referID, emp_employee_num),
-FOREIGN KEY (job_referID) REFERENCES JobListing(referenceID),
-FOREIGN KEY (emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
-);
+grant select on Draft to public;
 
 CREATE TABLE Supervisor(
 emp_employee_num INTEGER PRIMARY KEY, 
 fieldProject CHAR(30),
-FOREIGN KEY (emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
+FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
+
+grant select on Supervisor to public;
 
 CREATE TABLE HiringManager(
-emp_employee_num INTEGER  PRIMARY KEY, 
+emp_employee_num INTEGER PRIMARY KEY, 
 department CHAR(30), 
-FOREIGN KEY (emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
+FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
 
+grant select on HiringManager to public;
+
 CREATE TABLE Interview(
-date INTEGER,
+date_ INTEGER,
 interviewer CHAR(30),
 interviewee CHAR(30),
-PRIMARY KEY (date, interviewer, interviewee)
+PRIMARY KEY(date_, interviewer, interviewee)
 );
+
+grant select on Interview to public;
 
 CREATE TABLE Conducts(
 emp_employee_num INTEGER, 
-date INTEGER,
+date_ INTEGER,
 interviewer CHAR(30),
 interviewee CHAR(30),
-PRIMARY (emp_employee_num, date, interviewer, interviewee),
-FOREIGN KEY (emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num),
-FOREIGN KEY (date) REFERENCES Interview(date),
-FOREIGN KEY (interviewer) REFERENCES Interview(interviewer),
-FOREIGN KEY (interviewee) REFERENCES Interview(interviewee)
+PRIMARY KEY(emp_employee_num, date_, interviewer, interviewee),
+FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num),
+FOREIGN KEY(date_) REFERENCES Interview(date_),
+FOREIGN KEY(interviewer) REFERENCES Interview(interviewer),
+FOREIGN KEY(interviewee) REFERENCES Interview(interviewee)
 );
+
+grant select on Conducts to public;
 
 CREATE TABLE Reviews(
 job_app_num INTEGER,
 emp_employee_num INTEGER, 
-PRIMARY KEY (job_app_num, emp_employee_num)
-FOREIGN KEY (job_app_num ) REFERENCES StoreApplication(account_acc_num)
-FOREIGN KEY (emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
-)
+PRIMARY KEY(job_app_num, emp_employee_num)
+FOREIGN KEY(job_app_num) REFERENCES StoreApplication(account_acc_num)
+FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
+);
+
+grant select on Reviews to public;
 
 -- Job Listing Entities JR1 - JR10
 
 CREATE TABLE JR1_ScheduleSalary(
 ShiftSchedule CHAR(30) PRIMARY KEY,
 Salary INTEGER
-)
+);
+
+grant select on JR1_ScheduleSalary to public;
 
 CREATE TABLE JR3_ID_SpotNum(
 ReferenceID INTEGER PRIMARY KEY,
 num_of_Spots INTEGER
-)
+);
+
+grant select on JR3_ID_SpotNum to public;
 
 CREATE TABLE JR5_PositionDuties(
-Duties CHAR(3000) PRIMARY KEY,
+Duties CHAR(300) PRIMARY KEY,
 PositionName CHAR(30)
-)
+);
+
+grant select on JR5_PositionDuties to public;
 
 CREATE TABLE JR7_DutyQualifications(
-Qualifications CHAR(3000) PRIMARY KEY,
-Duties CHAR(3000)
-)
+Qualifications CHAR(300) PRIMARY KEY,
+Duties CHAR(300)
+);
+
+grant select on JR7_DutyQualifications to public;
 
 CREATE TABLE JR9_ID_Qualifications(
 ReferenceID INTEGER PRIMARY KEY,
-Qualifications CHAR(3000)
-)
+Qualifications CHAR(300)
+);
+
+grant select on JR9_ID_Qualifications to public;
 
 CREATE TABLE JR10_ID_Shift(
 ReferenceID INTEGER,
 ShiftSchedule CHAR(30),
 PRIMARY KEY(ReferenceID, ShiftSchedule)
-)
+);
+
+grant select on JR10_ID_Shift to public;
+
+CREATE TABLE Creates(
+job_referID INTEGER,
+emp_employee_num INTEGER,
+PRIMARY KEY(job_referID, emp_employee_num),
+FOREIGN KEY(job_referID) REFERENCES JR3_ID_SpotNum(ReferenceID),
+FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
+);
+
+grant select on Creates to public;
 
 CREATE TABLE AppliesFor(
 applyEmail CHAR(30),
@@ -201,7 +252,9 @@ applyReferenceID INTEGER,
 PRIMARY KEY(applyEmail, applyReferenceID),
 FOREIGN KEY(applyEmail) REFERENCES Applicant(applicant_email),
 FOREIGN KEY(applyReferenceID) REFERENCES JR3_ID_SpotNum(ReferenceID)
-)
+);
+
+grant select on AppliesFor to public;
 
 -- INSERTION STATEMENTS
 
