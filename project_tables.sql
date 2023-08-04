@@ -1,39 +1,39 @@
 -- DROP TABLES
 
-drop table Applicant;
-drop table CreateAccount;
-drop table StoreApplication;
-drop table ProduceApplication;
-drop table CoverLetter;
-drop table Resumes;
-drop table AppliesFor;
-drop table AcceptDenyOffer;
-drop table Draft;
-drop table Creates;
 drop table R1_PositionNameTeam;
-drop table R3_EmployeeNumName;
 drop table R5_EmployeeNumPosition;
 drop table R7_EmailPhone;
 drop table R8_EmployeeNumEmail;
-drop table Supervisor;
+drop table ProduceApplication;
+drop table CoverLetter;
+drop table Resumes;
+drop table Draft;
 drop table HiringManager;
+drop table Supervisor;
 drop table Conducts;
-drop table Interview;
 drop table Reviews;
 drop table JR1_ScheduleSalary;
-drop table JR3_ID_SpotNum;
 drop table JR5_PositionDuties;
 drop table JR7_DutyQualifications;
 drop table JR9_ID_Qualifications;
 drop table JR10_ID_Shift;
+drop table Creates;
+drop table AppliesFor;
+drop table JR3_ID_SpotNum;
+drop table Interview;
+drop table R3_EmployeeNumName;
+drop table AcceptDenyOffer;
+drop table StoreApplication;
+drop table CreateAccount;
+drop table Applicant;
 
 -- CREATE TABLES
 
 CREATE TABLE Applicant(
 applicant_email CHAR(30) PRIMARY KEY,
-name CHAR(30),
+name_ CHAR(30),
 phone_num INTEGER UNIQUE,
-address CHAR(30)
+address_ CHAR(30)
 );	
 
 grant select on Applicant to public;
@@ -66,7 +66,7 @@ grant select on R5_EmployeeNumPosition to public;
 
 CREATE TABLE R7_EmailPhone(
 emp_email CHAR(30) PRIMARY KEY,
-emp_phone_num INTEGER,
+emp_phone_num INTEGER
 );
 
 grant select on R7_EmailPhone to public;
@@ -81,7 +81,7 @@ grant select on R8_EmployeeNumEmail to public;
 
 CREATE TABLE CreateAccount(
 applicant_email CHAR(30),
-account_acc_num INTEGER  PRIMARY KEY,
+account_acc_num INTEGER PRIMARY KEY,
 FOREIGN KEY(applicant_email) REFERENCES Applicant(applicant_email)
 );
 
@@ -135,8 +135,8 @@ grant select on AcceptDenyOffer to public;
 CREATE TABLE Draft(
 offer_employee_num INTEGER,
 emp_employee_num INTEGER,
-PRIMARY KEY(offer_employee_num, emp_employee_num)
-FOREIGN KEY(offer_employee_num) REFERENCES AcceptDenyOffer(offer_employee_num)
+PRIMARY KEY(offer_employee_num, emp_employee_num),
+FOREIGN KEY(offer_employee_num) REFERENCES AcceptDenyOffer(offer_employee_num),
 FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
 
@@ -169,14 +169,12 @@ grant select on Interview to public;
 
 CREATE TABLE Conducts(
 emp_employee_num INTEGER, 
-date_ INTEGER,
+date_cd INTEGER,
 interviewer CHAR(30),
 interviewee CHAR(30),
-PRIMARY KEY(emp_employee_num, date_, interviewer, interviewee),
+PRIMARY KEY(emp_employee_num, date_cd, interviewer, interviewee),
 FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num),
-FOREIGN KEY(date_) REFERENCES Interview(date_),
-FOREIGN KEY(interviewer) REFERENCES Interview(interviewer),
-FOREIGN KEY(interviewee) REFERENCES Interview(interviewee)
+FOREIGN KEY(date_cd, interviewer, interviewee) REFERENCES Interview(date_, interviewer, interviewee)
 );
 
 grant select on Conducts to public;
@@ -184,8 +182,8 @@ grant select on Conducts to public;
 CREATE TABLE Reviews(
 job_app_num INTEGER,
 emp_employee_num INTEGER, 
-PRIMARY KEY(job_app_num, emp_employee_num)
-FOREIGN KEY(job_app_num) REFERENCES StoreApplication(account_acc_num)
+PRIMARY KEY(job_app_num, emp_employee_num),
+FOREIGN KEY(job_app_num) REFERENCES StoreApplication(job_app_num),
 FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
 
@@ -260,19 +258,19 @@ grant select on AppliesFor to public;
 
 -- Applicant
 
-INSERT INTO Applicant(applicant_email, name, phone_num, address)
+INSERT INTO Applicant(applicant_email, name_, phone_num, address_)
 VALUES('sean@gmail.com', 'Sean', 2362844844, '4472 Steeles Ave E, Markham, ON L3R 0L4')
 
-INSERT INTO Applicant(applicant_email, name, phone_num, address)
+INSERT INTO Applicant(applicant_email, name_, phone_num, address_)
 VALUES('dani@gmail.com', 'Dani', 7785754724, '23 Drewry Ave, Toronto, ON M2M 2E4')
 
-INSERT INTO Applicant(applicant_email, name, phone_num, address)
+INSERT INTO Applicant(applicant_email, name_, phone_num, address_)
 VALUES('aaron@gmail.com', 'Aaron', 7784929582, '565 Bernard Ave #14, Kelowna, BC V1Y 8R2')
 
-INSERT INTO Applicant(applicant_email, name, phone_num, address)
+INSERT INTO Applicant(applicant_email, name_, phone_num, address_)
 VALUES('gittu@gmail.com', 'Gittu', 6043841737, '10370 82 Ave NW, Edmonton, AB T6E 4E7')
 
-INSERT INTO Applicant(applicant_email, name, phone_num, address)
+INSERT INTO Applicant(applicant_email, name_, phone_num, address_)
 VALUES('yan@gmail.com', 'Yan', 2363727371, '2435 Ch Duncan, Mount-Royal, QC H4P 2A2')
 
 -- R1 (Position & Name of Employer)
@@ -473,36 +471,36 @@ VALUES(9, 'Hi my name is Gittu and please recruit me.')
 INSERT INTO CoverLetter(job_app_num, introduction)
 VALUES(10, 'Hi my name is Yan and please recruit me.')
 
--- Resume 
+-- Resumes 
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(1, 'Sean', '50 years in Google', '2 Bachelors')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(2, 'Dani', '50 years in Microsoft', '3 Masters')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(3, 'Aaron', '50 years in Tesla', '1 Bachelor, 1 Masters')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(4, 'Gittu', '50 years in UBC', '1 Doctorate')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(5, 'Yan', '50 years in UBC', '5 Masters')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(6, 'Sean', '50 years in Google', '2 Bachelors')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(7, 'Dani', '50 years in Microsoft', '3 Masters')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(8, 'Aaron', '50 years in Tesla', '1 Bachelor, 1 Masters')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(9, 'Gittu', '50 years in UBC', '1 Doctorate')
 
-INSERT INTO Resume(job_app_num, education, experience, resName)
+INSERT INTO Resumes(job_app_num, education, experience, resName)
 VALUES(10, 'Yan', '50 years in UBC', '5 Masters')
 
 -- Accept Deny Offer
@@ -613,66 +611,66 @@ VALUES(5555, 'Cellular')
 
 -- Interview
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(12122023, 'Bill Gates', 'Sean')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(12202023, 'Bill Gates', 'Sean')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11092023, 'Elon Musk', 'Dani')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11202023, 'Elon Musk', 'Aaron')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11092023, 'Jeff Bezos', 'Dani')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11092023, 'Jeff Bezos', 'Aaron')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(12012023, 'Tim Cook', 'Gittu')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(12212023, 'Tim Cook', 'Yan')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11042023, 'Jack Ma', 'Sean')
 
-INSERT INTO Interview(date, interviewer, interviewee)
+INSERT INTO Interview(date_, interviewer, interviewee)
 VALUES(11042023, 'Jack Ma', 'Yan')
 
 -- Conducts
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(1111, 12122023, 'Bill Gates', 'Sean')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(3295, 12202023, 'Steve Jobs', 'Sean')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(1342, 11092023, 'Elon Musk', 'Dani')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(3333, 11202023, 'Jeff Bezos', 'Aaron')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(6666, 11092023, 'Jeff Bezos', 'Dani')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(8888, 11092023, 'Tim Cook', 'Aaron')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(9999, 12012023, 'Tim Cook', 'Gittu')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(6283, 12212023, 'Tim Cook', 'Yan')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(1132, 11042023, 'Jack Ma', 'Sean')
 
-INSERT INTO Conducts(emp_employee_num, date, interviewer, interviewee)
+INSERT INTO Conducts(emp_employee_num, date_cd, interviewer, interviewee)
 VALUES(7166, 11042023, 'Jack Ma', 'Yan')
 
 -- Reviews
