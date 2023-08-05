@@ -97,7 +97,7 @@
             <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
         </form>
 
-        <hr />
+        <hr/>
 
         <h2>Print Tuples from jobTable</h2>
         <form id="printJob" method="GET" action="project.php"> <!--refresh page when submitted-->
@@ -105,7 +105,7 @@
             <input type="submit" name="printJob"></p>
         </form>
 
-        <hr />
+        <hr/>
         <!-- NEW -->
         <h2>Print Tuples from interviewTable</h2>
         <form id="printInterview" method="GET" action="project.php"> <!--refresh page when submitted-->
@@ -120,9 +120,9 @@
             <input type="submit" name="printAccount"></p>
         </form>
 
-        <hr />
+        <hr/>
 
-        <h2>Update Name in DemoTable</h2>
+        <h2>Update Name in Account</h2>
         <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
 
         <form method="POST" action="project.php"> <!--refresh page when submitted-->
@@ -132,8 +132,8 @@
 
             <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
         </form>
-
-
+        <hr/>
+        <p> ALL PHP ECHOS: </p>
         <?php
         include 'functions.php';
 
@@ -336,7 +336,7 @@
 
 
         // HANDLE ALL POST ROUTES
-	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
+	    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
         function handlePOSTRequest() {
             if (connectToDB()) {
                 if (array_key_exists('resetAllRequest', $_POST)) {
@@ -353,7 +353,7 @@
         }
         // test commit
         // HANDLE ALL GET ROUTES
-    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
+        // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
         function handleGETRequest() {
             if (connectToDB()) {
                 if (array_key_exists('printJob', $_GET)) {
