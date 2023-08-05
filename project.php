@@ -43,6 +43,7 @@
             <button>Past Applications</button>
             <button onclick="upcomingInterviews()">Upcoming Interviews</button>
             <button onclick="acceptDeny()">Accept/Deny Offer</button>
+            <button onclick="manageAccount()">Manage Account</button>
         </div>
         <p id="demo"></p>
         <script>
@@ -52,6 +53,9 @@
                 var y = document.getElementById("resetJob");
                 var a = document.getElementById("insert");
                 var b = document.getElementById("insertJob");
+                var m = document.getElementById("insertAccount");
+                var r = document.getElementById("resetAccount");
+
 
 
                 var printJob = document.getElementById("printJob");
@@ -60,6 +64,10 @@
                     if (show) {
                         // a.style.display = "none";
                         b.style.display = "none";
+                        a.style.display = "none";
+                        x.style.display = "none";
+                        m.style.display = "none";
+                        r.style.display = "none";
                     }
                     // x.style.display = "block";
                     y.style.display = "block";
@@ -133,6 +141,34 @@
                 }
                 show = true;
             }
+
+            function manageAccount() {
+                var x = document.getElementById("reset");
+                var y = document.getElementById("resetJob");
+                var a = document.getElementById("insert");
+                var b = document.getElementById("insertJob");
+                var m = document.getElementById("insertAccount");
+                var r = document.getElementById("resetAccount");
+
+                var printAccount = document.getElementById("printAccount");
+                // printJob.submit();
+                if (x.style.display === "none") {
+                    if (show) {
+                        a.style.display = "none";
+                        b.style.display = "none";
+                        x.style.display = "none";
+                        y.style.display = "none";
+                    }
+                    // x.style.display = "block";
+                    m.style.display = "block";
+                    r.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+                show = true;
+            }
+
+
         </script>
 
         <form id="reset" style="display: none" method="POST" action="project.php">
@@ -149,6 +185,11 @@
         <form id="resetInterview" style="display: none" method="POST" action="project.php">
             <input type="hidden" id="resetInterviewTablesRequest" name="resetInterviewTablesRequest">
             <p><input type="submit" value="Reset Interview" name="resetInterview"></p>
+        </form>
+
+        <form id="resetAccount" style="display: none" method="POST" action="project.php">
+            <input type="hidden" id="resetAccountTablesRequest" name="resetAccountTablesRequest">
+            <p><input type="submit" value="Reset Account" name="resetAccount"></p>
         </form>
 
         <form id="insert" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
@@ -180,6 +221,21 @@
                 <input type="submit" value="Insert" name="insertSubmitInterview"></p>
             </form>
 
+            <hr />
+
+            <h2> Add Account Information</h2>
+            <form id="insertAccount" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
+                <input type="hidden" id="insertAccountQueryRequest" name="insertAccountQueryRequest">
+                Name: <input type="text" name="insName"> <br /><br />
+                Email: <input type="text" name="insEmail"> <br /><br />
+                PhoneNumber: <input type="text" name="insPhone>"> <br /><br />
+                Address: <input type="text" name="insAddress>"> <br /><br />
+                <!-- AccountNumber: <input type="text" name="insNum>"> <br /><br /> -->
+
+                <input type="submit" value="Insert" name="insertSubmitAccount"></p>
+            </form>
+
+            <hr />
 
         <form id="update" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
             <input type="hidden" id="updateQueryRequest" name="updateQueryRequest">
@@ -189,11 +245,21 @@
             <input type="submit" value="Update" name="updateSubmit"></p>
         </form>
 
+        <form id="updateAccount" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
+            <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
+            Old Name: <input type="text" name="oldName"> <br /><br />
+            New Name: <input type="text" name="newName"> <br /><br />
+
+            <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
+        </form>
+
         <!-- <h2>Count the Tuples in DemoTable</h2>
         <form method="GET" action="project.php"> refresh page when submitted-->
             <!-- <input type="hidden" id="countTupleRequest" name="countTupleRequest">
             <input type="submit" name="countTuples"></p> -->
         <!-- </form> -->
+
+        <hr />
 
         <h2>Print Tuples from jobTable</h2>
         <form id="printJob" method="GET" action="project.php"> <!--refresh page when submitted-->
@@ -201,6 +267,7 @@
             <input type="submit" name="printJob"></p>
         </form>
 
+        <hr />
         <!-- NEW -->
         <h2>Print Tuples from interviewTable</h2>
         <form id="printInterview" method="GET" action="project.php"> <!--refresh page when submitted-->
@@ -211,6 +278,28 @@
             <input type="hidden" name="positionName" value="positionName">
             <input type="submit">
         </form> -->
+
+        <hr />
+
+        <h2>Print Tuples from accountTable</h2>
+        <form id="printAccount" method="GET" action="project.php"> <!--refresh page when submitted-->
+            <input type="hidden" id="printRequestAccount" name="printRequestAccount">
+            <input type="submit" name="printAccount"></p>
+        </form>
+
+        <hr />
+
+        <h2>Update Name in DemoTable</h2>
+        <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+
+        <form method="POST" action="project.php"> <!--refresh page when submitted-->
+            <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
+            Old Name: <input type="text" name="oldName"> <br /><br />
+            New Name: <input type="text" name="newName"> <br /><br />
+
+            <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
+        </form>
+
 
         <?php
         //this tells the system that it's no longer just parsing html; it's now parsing PHP
@@ -291,6 +380,21 @@
             echo "</table>";
         }
 
+        function printResultAccount($result) {
+            echo "<br>Retrieved data from table accountTable:<br>";
+            echo "<table>";
+            echo "<tr><th>Name</th><th>Email</th><th>Phone Number</th><th>Address</th><th>Account Number</th></tr>";
+
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                echo "<tr><td>";
+                // WILL need to change the hyperlink
+                // echo "<tr><td>" . '<a target = "_blank" href="https://www.students.cs.ubc.ca/~fulino/jobListing.php?posID='.$row['REFERENCEID'].' ">' . $row['POSITION'] . "</a>" . "</td><td>" . $row["REFERENCEID"] . "</td><td>" . $row["SPOTS_LEFT"] . "</td><td>" . $row["ANNUAL_SALARY"] . "</td><td>" . $row["WORK_TYPE"] . "</td></tr>"; //or just use "echo $row[0]"
+                echo $row["NAME"] . "</td><td>" . $row["EMAIL"] . "</td><td>" . $row["PHONE_NUMBER"] . "</td><td>" . $row["ADDRESS"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>";
+            }
+            //echo "<br>Retrieved data from table demoTable:<br>";
+            echo "</table>";
+        }
+
         function handleResetRequest() {
             global $db_conn;
             // Drop old table
@@ -365,6 +469,22 @@
             OCICommit($db_conn);
             }
 
+            function handleResetAccountRequest() {
+                $accountTuple = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", b":bind5" => "123456");
+                $allAccounttuples = array ($accountTuple);
+                global $db_conn;
+                // Drop old table
+                executePlainSQL("DROP TABLE accountTable");
+                echo "<br> old account table dropped <br>";
+                // Create new table
+                echo "<br> creating new table <br>";
+                executePlainSQL("CREATE TABLE accountTable (name char(30), email char(30), phone_number char(30), address char(100), account_number int PRIMARY KEY)");
+                echo "<br> new table created <br>";
+                executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $allAccounttuples);
+                echo "<br> default tuples inserted <br>";
+                OCICommit($db_conn);
+                }
+
 
         function handleInsertRequest() {
             global $db_conn;
@@ -423,6 +543,27 @@
             OCICommit($db_conn);
         }
 
+        function handleInsertAccountRequest() {
+            global $db_conn;
+
+            //Getting the values from user and insert data into the table
+            $tuple = array (
+                ":bind1" => $_POST['insName'],
+                ":bind2" => $_POST['insEmail'],
+                ":bind3" => $_POST['insPhone'],
+                ":bind4" => $_POST['insAddress'],
+                // ":bind5" => $_POST['insNum']
+            );
+
+            $alltuples = array (
+                $tuple
+            );
+
+            executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, '000000')", $alltuples);
+            OCICommit($db_conn);
+        }
+
+
 
         function handleUpdateRequest() {
             //ob_end_clean();
@@ -435,6 +576,20 @@
             executePlainSQL("UPDATE demoTable SET name='" . $new_name . "' WHERE name='" . $old_name . "'");
             OCICommit($db_conn);
         }
+
+        function handleAccountUpdateRequest() {
+            //ob_end_clean();
+            global $db_conn;
+
+            $old_name = $_POST['oldName'];
+            $new_name = $_POST['newName'];
+
+            // you need the wrap the old name and new name values with single quotations
+            executePlainSQL("UPDATE accountTable SET name='" . $new_name . "' WHERE name='" . $old_name . "'");
+            OCICommit($db_conn);
+        }
+
+
         function handleCountRequest() {
             global $db_conn;
 
@@ -472,6 +627,19 @@
             printResultInterview($result);
         }
 
+        // NEW:
+        function handleCountAccountRequest() {
+            global $db_conn;
+
+            $result = executePlainSQL("SELECT Count(*) FROM accountTable");
+
+            if (($row = oci_fetch_row($result)) != false) {
+                echo "<br> The number of tuples in accountTable: " . $row[0] . "<br>";
+            }
+            $result = executePlainSQL("SELECT * FROM accountTable");
+            printResultAccount($result);
+        }
+
 
         // HANDLE ALL POST ROUTES
 	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
@@ -481,8 +649,8 @@
                     handleResetRequest();
                 } else if (array_key_exists('resetJobTablesRequest', $_POST)) {
                     handleResetJobRequest();
-                } else if (array_key_exists('updateQueryRequest', $_POST)) {
-                    handleUpdateRequest();
+                } else if (array_key_exists('updateAccountQueryRequest', $_POST)) {
+                    handleAccountUpdateRequest();
                 } else if (array_key_exists('insertQueryRequest', $_POST)) {
                     handleInsertRequest();
                 } else if (array_key_exists('insertJobQueryRequest', $_POST)) {
@@ -492,6 +660,11 @@
                     handleResetInterviewRequest();
                 } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
                     handleInsertInterviewRequest();
+                } // NEW:
+                else if (array_key_exists('resetAccountTablesRequest', $_POST)) {
+                    handleResetAccountRequest();
+                } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
+                    handleInsertAccountRequest();
              }
 
                 disconnectFromDB();
@@ -509,15 +682,18 @@
                 } // NEW
                 else if (array_key_exists('printInterview', $_GET)) {
                     handleCountInterviewRequest();
+                } // NEW
+                else if (array_key_exists('printAccount', $_GET)) {
+                    handleCountAccountRequest();
                 }
 
                 disconnectFromDB();
             }
         }
 
-        if (isset($_POST['resetJob']) || isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit']) || isset($_POST['insertSubmitJob']) || isset($_POST['resetInterview']) || isset($_POST['insertSubmitInterview'])) {
+        if (isset($_POST['resetJob']) || isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit']) || isset($_POST['insertSubmitJob']) || isset($_POST['resetInterview']) || isset($_POST['insertSubmitInterview']) || isset($_POST['resetAccount']) || isset($_POST['insertSubmitAccount']) || isset($_POST['updateSubmitAccount']) ) {
             handlePOSTRequest();
-        } else if (isset($_GET['countTupleRequest']) || isset($_GET['printRequest']) || isset($_GET['printRequestInterview'])) {
+        } else if (isset($_GET['countTupleRequest']) || isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestAccount'])) {
             handleGETRequest();
         }
 
