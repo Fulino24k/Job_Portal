@@ -20,102 +20,44 @@
         <script>
             var show = false;
             function appliesFor() {
-                var x = document.getElementById("reset");
-                var y = document.getElementById("resetJob");
-                var a = document.getElementById("insert");
-                var b = document.getElementById("insertJob");
-                var m = document.getElementById("insertAccount");
-                var r = document.getElementById("resetAccount");
-
-
-
-                var printJob = document.getElementById("printJob");
-                // printJob.submit();
-                if (x.style.display === "none") {
+                var r = document.getElementById("reset");
+                var a = document.getElementById("insertAccount");
+                var h = document.getElementById("accHead");
+                if (r.style.display === "none") {
                     if (show) {
-                        // a.style.display = "none";
-                        b.style.display = "none";
                         a.style.display = "none";
-                        x.style.display = "none";
-                        m.style.display = "none";
-                        r.style.display = "none";
+                        h.style.display = "none";
                     }
-                    x.style.display = "block";
-                    y.style.display = "block";
+                    r.style.display = "block";
                 } else {
-                    x.style.display = "none";
-                    y.style.display = "block";
+                    r.style.display = "none";
                 }
                 show = true;
             }
 
             function upcomingInterviews() {
-                var x = document.getElementById("reset");
-                var y = document.getElementById("resetJob");
-                var a = document.getElementById("insert");
-                var b = document.getElementById("insertJob");
-
-                var s = document.getElementById("resetInterview");
-                var printJob = document.getElementById("printJob");
-                // printJob.submit();
-                if (x.style.display === "none") {
-                    if (show) {
-                        a.style.display = "none";
-                        b.style.display = "none";
-                        x.style.display = "none";
-                        y.style.display = "none";
-                    }
-
-                    s.style.display = "block";
-                    // t.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-                show = true;
-                        }
+                // TODO
+            }
 
 
             function acceptDeny() {
-                var x = document.getElementById("insert");
-                var y = document.getElementById("insertJob");
-                var a = document.getElementById("reset");
-                var b = document.getElementById("resetJob");
-                if (x.style.display === "none") {
-                    if (show) {
-                        a.style.display = "none";
-                        b.style.display = "none";
-                    }
-                    x.style.display = "block";
-                    y.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                    y.style.display = "none";
-                }
-                show = true;
+                // TODO
             }
 
             function manageAccount() {
-                var x = document.getElementById("reset");
-                var y = document.getElementById("resetJob");
-                var a = document.getElementById("insert");
-                var b = document.getElementById("insertJob");
-                var m = document.getElementById("insertAccount");
-                var r = document.getElementById("resetAccount");
-
-                var printAccount = document.getElementById("printAccount");
-                // printJob.submit();
-                if (x.style.display === "none") {
+                var a = document.getElementById("insertAccount");
+                var r = document.getElementById("reset");
+                var h = document.getElementById("accHead");
+                if (a.style.display === "none") {
                     if (show) {
-                        a.style.display = "none";
-                        b.style.display = "none";
-                        x.style.display = "none";
-                        y.style.display = "none";
+                        r.style.display = "none";
                     }
                     // x.style.display = "block";
-                    m.style.display = "block";
-                    r.style.display = "block";
+                    a.style.display = "block";
+                    h.style.display = "block";
                 } else {
-                    x.style.display = "none";
+                    a.style.display = "none";
+                    h.style.display = "none";
                 }
                 show = true;
             }
@@ -128,73 +70,23 @@
             <p><input type="submit" value="Reset All Tables" name="resetAll"></p>
         </form>
 
-        <form id="resetJob" style="display: none" method="POST" action="project.php">
-            <input type="hidden" id="resetJobTablesRequest" name="resetJobTablesRequest">
-            <p><input type="submit" value="Reset Job" name="resetJob"></p>
-        </form>
-
-        <!-- NEW: -->
-        <form id="resetInterview" style="display: none" method="POST" action="project.php">
-            <input type="hidden" id="resetInterviewTablesRequest" name="resetInterviewTablesRequest">
-            <p><input type="submit" value="Reset Interview" name="resetInterview"></p>
-        </form>
-
-        <form id="resetAccount" style="display: none" method="POST" action="project.php">
-            <input type="hidden" id="resetAccountTablesRequest" name="resetAccountTablesRequest">
-            <p><input type="submit" value="Reset Account" name="resetAccount"></p>
-        </form>
-
-        <form id="insert" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">
-            Number: <input type="text" name="insNo"> <br /><br />
-            Name: <input type="text" name="insName"> <br /><br />
-
-            <input type="submit" value="Insert" name="insertSubmit"></p>
-        </form>
-
-        <form id="insertJob" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="insertJobQueryRequest" name="insertJobQueryRequest">
-            Position: <input type="text" name="insPo"> <br /><br />
-            ReferenceID: <input type="text" name="insRef"> <br /><br />
-            Spots Left: <input type="text" name="insSpot"> <br /><br />
-            Annual Salary: <input type="text" name="insSal"> <br /><br />
-            Work Type: <input type="text" name="insType"> <br /><br />
-
-            <input type="submit" value="Insert" name="insertSubmitJob"></p>
-        </form>
-
-        <!-- NEW -->
         <form id="insertInterview" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-                <input type="hidden" id="insertInterviewQueryRequest" name="insertInterviewQueryRequest">
-                Interviewer: <input type="text" name="insInt"> <br /><br />
-                Interviewee: <input type="text" name="insIntee"> <br /><br />
-                IntDate: <input type="text" name="insIntDate>"> <br /><br />
+            <input type="hidden" id="insertInterviewQueryRequest" name="insertInterviewQueryRequest">
+            Interviewer: <input type="text" name="insInt"> <br /><br />
+            Interviewee: <input type="text" name="insIntee"> <br /><br />
+            IntDate: <input type="text" name="insIntDate>"> <br /><br />
+            <input type="submit" value="Insert" name="insertSubmitInterview"></p>
+        </form>
 
-                <input type="submit" value="Insert" name="insertSubmitInterview"></p>
-            </form>
-
-            <hr />
-
-            <h2> Add Account Information</h2>
-            <form id="insertAccount" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-                <input type="hidden" id="insertAccountQueryRequest" name="insertAccountQueryRequest">
-                Name: <input type="text" name="insName"> <br /><br />
-                Email: <input type="text" name="insEmail"> <br /><br />
-                PhoneNumber: <input type="text" name="insPhone"> <br /><br />
-                Address: <input type="text" name="insAddress"> <br /><br />
-                AccountNumber: <input type="text" name="insNum>"> <br /><br />
-
-                <input type="submit" value="Insert" name="insertSubmitAccount"></p>
-            </form>
-
-            <hr />
-
-        <form id="update" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="updateQueryRequest" name="updateQueryRequest">
-            Old Name: <input type="text" name="oldName"> <br /><br />
-            New Name: <input type="text" name="newName"> <br /><br />
-
-            <input type="submit" value="Update" name="updateSubmit"></p>
+        <h2 id="accHead" style="display: none"> Add Account Information</h2>
+        <form id="insertAccount" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
+            <input type="hidden" id="insertAccountQueryRequest" name="insertAccountQueryRequest">
+            Name: <input type="text" name="insName"> <br /><br />
+            Email: <input type="text" name="insEmail"> <br /><br />
+            PhoneNumber: <input type="text" name="insPhone"> <br /><br />
+            Address: <input type="text" name="insAddress"> <br /><br />
+            AccountNumber: <input type="text" name="insNum>"> <br /><br />
+            <input type="submit" value="Insert" name="insertSubmitAccount"></p>
         </form>
 
         <form id="updateAccount" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
@@ -355,28 +247,6 @@
             OCICommit($db_conn);
         }
 
-
-        function handleInsertJobRequest() {
-            global $db_conn;
-
-            //Getting the values from user and insert data into the table
-            $tuple = array (
-                ":bind1" => $_POST['insPo'],
-                ":bind2" => $_POST['insRef'],
-                ":bind3" => $_POST['insSpot'],
-                ":bind4" => $_POST['insSal'],
-                ":bind5" => $_POST['insType']
-            );
-
-            $alltuples = array (
-                $tuple
-            );
-
-            executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples);
-            OCICommit($db_conn);
-        }
-
-        // NEW:
         function handleInsertInterviewRequest() {
             global $db_conn;
 
@@ -415,20 +285,6 @@
             OCICommit($db_conn);
         }
 
-
-
-        function handleUpdateRequest() {
-            //ob_end_clean();
-            global $db_conn;
-
-            $old_name = $_POST['oldName'];
-            $new_name = $_POST['newName'];
-
-            // you need the wrap the old name and new name values with single quotations
-            executePlainSQL("UPDATE demoTable SET name='" . $new_name . "' WHERE name='" . $old_name . "'");
-            OCICommit($db_conn);
-        }
-
         function handleAccountUpdateRequest() {
             //ob_end_clean();
             global $db_conn;
@@ -440,20 +296,6 @@
             executePlainSQL("UPDATE accountTable SET name='" . $new_name . "' WHERE name='" . $old_name . "'");
             OCICommit($db_conn);
         }
-
-
-        function handleCountRequest() {
-            global $db_conn;
-
-            $result = executePlainSQL("SELECT Count(*) FROM demoTable");
-
-            if (($row = oci_fetch_row($result)) != false) {
-                echo "<br> The number of tuples in demoTable: " . $row[0] . "<br>";
-            }
-            $result = executePlainSQL("SELECT * FROM demoTable");
-            printResult($result);
-        }
-
         function handleCountJobRequest() {
             global $db_conn;
 
@@ -497,30 +339,15 @@
 	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
         function handlePOSTRequest() {
             if (connectToDB()) {
-                if (array_key_exists('resetTablesRequest', $_POST)) {
-                    handleResetRequest();
-                } else if (array_key_exists('resetJobTablesRequest', $_POST)) {
-                    handleResetJobRequest();
+                if (array_key_exists('resetAllRequest', $_POST)) {
+                    handleResetAllRequest();
                 } else if (array_key_exists('updateAccountQueryRequest', $_POST)) {
                     handleAccountUpdateRequest();
-                } else if (array_key_exists('insertQueryRequest', $_POST)) {
-                    handleInsertRequest();
-                } else if (array_key_exists('insertJobQueryRequest', $_POST)) {
-                    handleInsertJobRequest();
-                } // NEW:
-                else if (array_key_exists('resetInterviewTablesRequest', $_POST)) {
-                    handleResetInterviewRequest();
                 } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
                     handleInsertInterviewRequest();
-                } // NEW:
-                else if (array_key_exists('resetAccountTablesRequest', $_POST)) {
-                    handleResetAccountRequest();
                 } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
                     handleInsertAccountRequest();
-                } else if (array_key_exists('resetAllRequest', $_POST)) {
-                    handleResetAllRequest();
                 } 
-
                 disconnectFromDB();
             }
         }
@@ -529,15 +356,11 @@
     // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
         function handleGETRequest() {
             if (connectToDB()) {
-                if (array_key_exists('countTuples', $_GET)) {
-                    handleCountRequest();
-                } else if (array_key_exists('printJob', $_GET)) {
+                if (array_key_exists('printJob', $_GET)) {
                     handleCountJobRequest();
-                } // NEW
-                else if (array_key_exists('printInterview', $_GET)) {
+                } else if (array_key_exists('printInterview', $_GET)) {
                     handleCountInterviewRequest();
-                } // NEW
-                else if (array_key_exists('printAccount', $_GET)) {
+                } else if (array_key_exists('printAccount', $_GET)) {
                     handleCountAccountRequest();
                 }
 
@@ -545,9 +368,9 @@
             }
         }
 
-        if (isset($_POST['resetAll']) || isset($_POST['resetJob']) || isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit']) || isset($_POST['insertSubmitJob']) || isset($_POST['resetInterview']) || isset($_POST['insertSubmitInterview']) || isset($_POST['resetAccount']) || isset($_POST['insertSubmitAccount']) || isset($_POST['updateSubmitAccount']) ) {
+        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) || isset($_POST['insertSubmitAccount']) || isset($_POST['updateSubmitAccount']) ) {
             handlePOSTRequest();
-        } else if (isset($_GET['countTupleRequest']) || isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestAccount'])) {
+        } else if (isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestAccount'])) {
             handleGETRequest();
         }
         ?>
