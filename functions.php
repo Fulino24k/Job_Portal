@@ -104,5 +104,125 @@ See the sample code below for how this function is used */
         }
     }
 }
+function getDefaultJobTuples() {
+    $jobTuple1 = array (":bind1" => "Assistant Chef", ":bind2" => "00001", ":bind3" => "5",":bind4" => "40534", ":bind5" => "Part",
+                ":bind6" => "<ul> <li>Food Safe Level 3</li> <li> 2 years of kitchen prep </li></ul>",
+                ":bind7" => "<ul> <li>Kitchen food prep</li> <li> assist in creation of new menu </li></ul>" );
+    $jobTuple2 = array (":bind1" => "Head Janitor", ":bind2" => "00002", ":bind3" => "2",":bind4" => "49998", ":bind5" => "Full",
+        ":bind6" => "<ul><li> 2 years of janitoring </li></ul>",
+        ":bind7" => "<ul><li> cleaning of the entire 30 floor office tower </li></ul>" );
+    $jobTuple3 = array (":bind1" => "Software Enginner", ":bind2" => "00003", ":bind3" => "20",":bind4" => "90615", ":bind5" => "Full",
+        ":bind6" => "<ul><li> 100 years of related experience </li></ul>",
+        ":bind7" => "<ul><li> make whatever that makes big money </li></ul>" );
+    $jobTuple4 = array (":bind1" => "Customer Service Rep", ":bind2" => "00004", ":bind3" => "20",":bind4" => "62983", ":bind5" => "Full",
+        ":bind6" => "<ul><li> 2 years of related experience</li></ul>",
+        ":bind7" => "duti<ul><li> be nice to customers </li></ul>es" );
+    $jobTuple5 = array (":bind1" => "Database Intern", ":bind2" => "00005", ":bind3" => "30",":bind4" => "0", ":bind5" => "Part",
+        ":bind6" => "<ul><li> none required </li></ul>",
+        ":bind7" => "<ul><li> learn and not get paid unlucky </li></ul>" );
+    $jobTuple6 = array (":bind1" => "Marketing Analyst", ":bind2" => "00006", ":bind3" => "10",":bind4" => "76526", ":bind5" => "Part",
+        ":bind6" => "<ul><li> 2 years of related experience </li></ul>",
+        ":bind7" => "<ul><li> analyze the market </li></ul>" );
+    $jobTuple7 = array (":bind1" => "Sales Assistant", ":bind2" => "00007", ":bind3" => "15",":bind4" => "54219", ":bind5" => "Part",
+        ":bind6" => "<ul><li> 2 years of related experience </li></ul>",
+        ":bind7" => "duti<ul><li> assist in sales? </li></ul>es" );
+    $allJobtuples = array ($jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5, $jobTuple6, $jobTuple7);
+    return $allJobtuples;
+}
+
+function getDefaultInterviewTuples() {
+    $interviewTuple1 = array (":bind1" => "Elon Musk", ":bind2" => "Yan", ":bind3" => "120923");
+    $interviewTuple2 = array (":bind1" => "Steve Jobs", ":bind2" => "Yan", ":bind3" => "121023");
+    $interviewTuple3 = array (":bind1" => "Bill Gates", ":bind2" => "Yan", ":bind3" => "120923");
+    $interviewTuple4 = array (":bind1" => "Elon Musk", ":bind2" => "Yan", ":bind3" => "122323");
+    $interviewTuple5 = array (":bind1" => "Mark Zuckerberg", ":bind2" => "Yan", ":bind3" => "122323");
+    $allInterviewtuples = array ($interviewTuple1, $interviewTuple2, $interviewTuple3, $interviewTuple4, $interviewTuple5);
+    return $allInterviewtuples;
+}
+
+function getDefaultAccountTuples() {
+    $accountTuple = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", ":bind5" => "123456");
+    $allAccounttuples = array ($accountTuple);
+    return $allAccounttuples;
+}
+
+// UNUSED FUNCTIONS KEPT HERE FOR BACKUP
+function handleResetJobRequest() {
+    $jobTuple1 = array (":bind1" => "Assistant Chef", ":bind2" => "00001", ":bind3" => "5",b":bind4" => "40534", ":bind5" => "Part",
+        ":bind6" => "<ul> <li>Food Safe Level 3</li> <li> 2 years of kitchen prep </li></ul>",
+        ":bind7" => "<ul> <li>Kitchen food prep</li> <li> assist in creation of new menu </li></ul>" );
+    $jobTuple2 = array (":bind1" => "Head Janitor", ":bind2" => "00002", ":bind3" => "2",b":bind4" => "49998", ":bind5" => "Full",
+        ":bind6" => "<ul><li> 2 years of janitoring </li></ul>",
+        ":bind7" => "<ul><li> cleaning of the entire 30 floor office tower </li></ul>" );
+    $jobTuple3 = array (":bind1" => "Software Enginner", ":bind2" => "00003", ":bind3" => "20",b":bind4" => "90615", ":bind5" => "Full",
+        ":bind6" => "<ul><li> 100 years of related experience </li></ul>",
+        ":bind7" => "<ul><li> make whatever that makes big money </li></ul>" );
+    $jobTuple4 = array (":bind1" => "Customer Service Rep", ":bind2" => "00004", ":bind3" => "20",b":bind4" => "62983", ":bind5" => "Full",
+        ":bind6" => "<ul><li> 2 years of related experience</li></ul>",
+        ":bind7" => "duti<ul><li> be nice to customers </li></ul>es" );
+    $jobTuple5 = array (":bind1" => "Database Intern", ":bind2" => "00005", ":bind3" => "30",b":bind4" => "0", ":bind5" => "Part",
+        ":bind6" => "<ul><li> none required </li></ul>",
+        ":bind7" => "<ul><li> learn and not get paid unlucky </li></ul>" );
+    $jobTuple6 = array (":bind1" => "Marketing Analyst", ":bind2" => "00006", ":bind3" => "10",b":bind4" => "76526", ":bind5" => "Part",
+        ":bind6" => "<ul><li> 2 years of related experience </li></ul>",
+        ":bind7" => "<ul><li> analyze the market </li></ul>" );
+    $jobTuple7 = array (":bind1" => "Sales Assistant", ":bind2" => "00007", ":bind3" => "15",b":bind4" => "54219", ":bind5" => "Part",
+        ":bind6" => "<ul><li> 2 years of related experience </li></ul>",
+        ":bind7" => "duti<ul><li> assist in sales? </li></ul>es" );
+    $allJobtuples = array ($jobTuple1, $jobTuple2, $jobTuple3, $jobTuple4, $jobTuple5, $jobTuple6, $jobTuple7);
+    global $db_conn;
+    // Drop old table
+    executePlainSQL("DROP TABLE jobTable");
+    executePlainSQL("DROP TABLE storeTable");
+    executePlainSQL("DROP TABLE coverTable");
+    executePlainSQL("DROP TABLE resumeTable");
+    echo "<br> all old tables dropped <br>";
+    // Create new table
+    echo "<br> creating new tables <br>";
+    executePlainSQL("CREATE TABLE jobTable (position char(30), referenceID char(30) PRIMARY KEY, spots_left int, annual_salary int, work_type char(30), qualification char(100), duty char(100))");
+    executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", $allJobtuples);
+    echo "<br> default tuples inserted <br>";
+    executePlainSQL("CREATE TABLE storeTable (app_num int PRIMARY KEY, apply_date int)");
+    executePlainSQL("CREATE TABLE coverTable (app_num int PRIMARY KEY, introduction char(300))");
+    executePlainSQL("CREATE TABLE resumeTable (app_num int PRIMARY KEY, name char(30), experience char(300), education char(300))");
+    echo "<br> tables created for store, cover, resume created <br>";
+    OCICommit($db_conn);
+}
+
+function handleResetInterviewRequest() {
+    $interviewTuple1 = array (":bind1" => "Elon Musk", ":bind2" => "Yan", b":bind3" => "120923");
+    $interviewTuple2 = array (":bind1" => "Steve Jobs", ":bind2" => "Yan", b":bind3" => "121023");
+    $interviewTuple3 = array (":bind1" => "Bill Gates", ":bind2" => "Yan", b":bind3" => "120923");
+    $interviewTuple4 = array (":bind1" => "Elon Musk", ":bind2" => "Yan", b":bind3" => "122323");
+    $interviewTuple5 = array (":bind1" => "Mark Zuckerberg", ":bind2" => "Yan", b":bind3" => "122323");
+    $allInterviewtuples = array ($interviewTuple1, $interviewTuple2, $interviewTuple3, $interviewTuple4, $interviewTuple5);
+    global $db_conn;
+    // Drop old table
+    executePlainSQL("DROP TABLE interviewTable");
+    echo "<br> old interview table dropped <br>";
+    // Create new table
+    echo "<br> creating new table <br>";
+    executePlainSQL("CREATE TABLE interviewTable (interviewer char(30), interviewee char(30), intDate int, PRIMARY KEY (interviewer, interviewee, intDate))");
+    echo "<br> new table created <br>";
+    executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", $allInterviewtuples);
+    echo "<br> default tuples inserted <br>";
+    OCICommit($db_conn);
+    }
+
+function handleResetAccountRequest() {
+    $accountTuple = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", b":bind5" => "123456");
+    $allAccounttuples = array ($accountTuple);
+    global $db_conn;
+    // Drop old table
+    executePlainSQL("DROP TABLE accountTable");
+    echo "<br> old account table dropped <br>";
+    // Create new table
+    echo "<br> creating new table <br>";
+    executePlainSQL("CREATE TABLE accountTable (name char(30), email char(30), phone_number char(30), address char(100), account_number int PRIMARY KEY)");
+    echo "<br> new table created <br>";
+    executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $allAccounttuples);
+    echo "<br> default tuples inserted <br>";
+    OCICommit($db_conn);
+}
 
 ?>
