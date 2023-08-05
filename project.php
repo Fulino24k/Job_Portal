@@ -147,7 +147,7 @@
         <hr/>
 
         <h2>Update Phone Number</h2>
-        <p>Input values are sensitive, please ensure phone number is inputted correctly.</p>
+        <p>Input values are sensitive, please ensure phone number is correct and in the format xxx-xxx-xxxx.</p>
 
         <form method="POST" action="project.php"> <!--refresh page when submitted-->
             <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
