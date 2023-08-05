@@ -183,44 +183,49 @@
             global $db_conn;
             // Drop old table
             executePlainSQL("DROP TABLE jobTable");
-            executePlainSQL("DROP TABLE storeTable");
             executePlainSQL("DROP TABLE coverTable");
             executePlainSQL("DROP TABLE resumeTable");
+            executePlainSQL("DROP TABLE storeAppTable");
             executePlainSQL("DROP TABLE interviewTable");
             executePlainSQL("DROP TABLE accountTable");
 
             echo "<br> SUCCESS: all old tables dropped <br>";
 
-            executePlainSQL("CREATE TABLE jobTable (
-                position       char(30), 
-                referenceID    char(30) PRIMARY KEY, 
-                spots_left     int, 
-                annual_salary  int, 
-                work_type      char(30), 
-                qualification  char(100), 
-                duty           char(100))");
-            executePlainSQL("CREATE TABLE storeTable (
-                app_num        int PRIMARY KEY, 
-                apply_date     int)");
-            executePlainSQL("CREATE TABLE coverTable (
-                app_num        int PRIMARY KEY, 
-                introduction  char(300))");
-            executePlainSQL("CREATE TABLE resumeTable (
-                app_num        int PRIMARY KEY, 
-                name           char(30), 
-                experience     char(300), 
-                education      char(300))");
-            executePlainSQL("CREATE TABLE interviewTable (
-                interviewer    char(30), 
-                interviewee    char(30), 
-                intDate        int, 
-                PRIMARY KEY (interviewer, interviewee, intDate))");
             executePlainSQL("CREATE TABLE accountTable (
-                name           char(30), 
-                email          char(30), 
-                phone_number   char(30), 
-                address        char(100), 
+                name char(30), 
+                email char(30), 
+                phone_number char(30), 
+                address char(100), 
                 account_number int PRIMARY KEY)");
+            executePlainSQL("CREATE TABLE jobTable (
+                position char(30), 
+                referenceID char(30) PRIMARY KEY, 
+                spots_left int, 
+                annual_salary int, 
+                work_type char(30), 
+                qualification char(100), 
+                duty char(100))");
+            executePlainSQL("CREATE TABLE storeAppTable (
+                app_num int PRIMARY KEY, 
+                apply_date int,
+                account_number int,
+                FOREIGN KEY(account_number) REFERENCES accountTable(account_number))");
+            executePlainSQL("CREATE TABLE coverTable (
+                app_num int PRIMARY KEY, 
+                introduction char(300),
+                FOREIGN KEY(app_num) REFERENCES storeAppTable(app_num))");
+            executePlainSQL("CREATE TABLE resumeTable (
+                app_num int PRIMARY KEY, 
+                name char(30), 
+                experience char(300), 
+                education char(300),
+                FOREIGN KEY(app_num) REFERENCES storeAppTable(app_num))");
+            executePlainSQL("CREATE TABLE interviewTable (
+                interviewer char(30), 
+                interviewee char(30), 
+                intDate int, 
+                PRIMARY KEY (interviewer, interviewee, intDate))");
+            
 
             executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", getDefaultJobTuples());
             executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", getDefaultInterviewTuples());
