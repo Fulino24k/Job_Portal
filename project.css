@@ -1,0 +1,54 @@
+.options-employee button {
+    background-color: #04AA6D; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.options-employee :after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.options-employee button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.options-employee button:hover {
+    background-color: #3e8e41;
+}
+.application button {
+    background-color: #04AA6D; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.application :after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.application button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.application button:hover {
+    background-color: #3e8e41;
+}
+table, td, th {
+    border: 1px solid;
+}
+table {
+    border-collapse: collapse;
+}
