@@ -91,22 +91,11 @@
 
         <form id="updateAccount" style="display: none" method="POST" action="project.php"> 
             <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
-            Old Address: <input type="text" name="oldAddress"> <br /><br />
-            New Address: <input type="text" name="newAddress"> <br /><br />
+            Old Address: </Address>: <input type="text" name="oldName"> <br /><br />
+            New Address: <input type="text" name="newName"> <br /><br />
 
             <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
         </form>
-
-
-        <form id="updatePhone" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
-            Old Phone Number: <input type="text" name="oldPhone"> <br /><br />
-            New Phone Number: <input type="text" name="newPhone"> <br /><br />
-
-            <input type="submit" value="UpdatePhone" name="updateSubmitAccount"></p>
-        </form>
-
-
 
         <hr/>
 
@@ -141,31 +130,17 @@
 
         <hr/>
 
-        <h2>Update Address</h2>
-        <p>Input values are sensitive, please ensure address is spelled correctly.</p>
+        <h2>Update Name in Account</h2>
+        <p>Input values are sensitive, please ensure phone number is correct and in the format xxx-xxx-xxxx.</p>
 
         <form method="POST" action="project.php"> 
             <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
-            Old Address: <input type="text" name="oldAddress"> <br /><br />
-            New Address: <input type="text" name="newAddress"> <br /><br />
+            Old Name: <input type="text" name="oldName"> <br /><br />
+            New Name: <input type="text" name="newName"> <br /><br />
 
             <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
         </form>
         <hr/>
-
-        <h2>Update Phone Number</h2>
-        <p>Input values are sensitive, please ensure phone number is correct and in the format xxx-xxx-xxxx.</p>
-
-        <form method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
-            Old Phone Number: <input type="text" name="oldPhone"> <br /><br />
-            New Phone Number: <input type="text" name="newPhone"> <br /><br />
-
-            <input type="submit" value="UpdatePhone" name="updateSubmitAccount"></p>
-        </form>
-
-        <hr/>
-
         <p> ALL PHP ECHOS: </p>
         <?php
         include 'functions.php';
@@ -252,40 +227,40 @@
             echo "<br> SUCCESS: all old tables dropped <br>";
 
             executePlainSQL("CREATE TABLE accountTable (
-                name char(30),
-                email char(30),
-                phone_number char(30),
-                address char(100),
+                name char(30), 
+                email char(30), 
+                phone_number char(30), 
+                address char(100), 
                 account_number int PRIMARY KEY)");
             executePlainSQL("CREATE TABLE jobTable (
-                position char(30),
-                referenceID char(30) PRIMARY KEY,
-                spots_left int,
-                annual_salary int,
-                work_type char(30),
-                qualification char(100),
+                position char(30), 
+                referenceID char(30) PRIMARY KEY, 
+                spots_left int, 
+                annual_salary int, 
+                work_type char(30), 
+                qualification char(100), 
                 duty char(100))");
             executePlainSQL("CREATE TABLE storeAppTable (
-                app_num int PRIMARY KEY,
+                app_num int PRIMARY KEY, 
                 apply_date int,
                 account_number int,
                 FOREIGN KEY(account_number) REFERENCES accountTable(account_number))");
             executePlainSQL("CREATE TABLE coverTable (
-                app_num int PRIMARY KEY,
+                app_num int PRIMARY KEY, 
                 introduction char(300),
                 FOREIGN KEY(app_num) REFERENCES storeAppTable(app_num))");
             executePlainSQL("CREATE TABLE resumeTable (
-                app_num int PRIMARY KEY,
-                name char(30),
-                experience char(300),
+                app_num int PRIMARY KEY, 
+                name char(30), 
+                experience char(300), 
                 education char(300),
                 FOREIGN KEY(app_num) REFERENCES storeAppTable(app_num))");
             executePlainSQL("CREATE TABLE interviewTable (
-                interviewer char(30),
-                interviewee char(30),
-                intDate int,
+                interviewer char(30), 
+                interviewee char(30), 
+                intDate int, 
                 PRIMARY KEY (interviewer, interviewee, intDate))");
-
+            
 
             executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", getDefaultJobTuples());
             executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", getDefaultInterviewTuples());
@@ -330,7 +305,7 @@
                 $tuple
             );
 
-            executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, '654321')", $alltuples);
+            executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, '000000')", $alltuples);
             OCICommit($db_conn);
         }
 
@@ -338,27 +313,13 @@
             //ob_end_clean();
             global $db_conn;
 
-            $old_address = $_POST['oldAddress'];
-            $new_address = $_POST['newAddress'];
+            $old_name = $_POST['oldName'];
+            $new_name = $_POST['newName'];
 
             // you need the wrap the old name and new name values with single quotations
-            executePlainSQL("UPDATE accountTable SET address='" . $new_address . "' WHERE address='" . $old_address . "'");
+            executePlainSQL("UPDATE accountTable SET name='" . $new_name . "' WHERE name='" . $old_name . "'");
             OCICommit($db_conn);
         }
-
-        function handlePhoneUpdateRequest() {
-            //ob_end_clean();
-            global $db_conn;
-
-            $old_phone = $_POST['oldPhone'];
-            $new_phone = $_POST['newPhone'];
-
-            // you need the wrap the old name and new name values with single quotations
-            executePlainSQL("UPDATE accountTable SET phone_number='" . $new_phone . "' WHERE phone_number='" . $old_phone . "'");
-            OCICommit($db_conn);
-        }
-
-
         function handleCountJobRequest() {
             global $db_conn;
 
@@ -420,14 +381,11 @@
                     handleResetAllRequest();
                 } else if (array_key_exists('updateAccountQueryRequest', $_POST)) {
                     handleAccountUpdateRequest();
-                } else if (array_key_exists('updatePhoneQueryRequest', $_POST)) {
-                    handlePhoneUpdateRequest();
                 } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
                     handleInsertInterviewRequest();
                 } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
                     handleInsertAccountRequest();
-
-                }
+                } 
                 disconnectFromDB();
             }
         }
@@ -460,4 +418,3 @@
         ?>
     </body>
 </html>
-
