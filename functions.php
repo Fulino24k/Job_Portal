@@ -17,7 +17,7 @@ function connectToDB() {
 
     // Your username is ora_(CWL_ID) and the password is a(student number). For example,
     // ora_platypus is the username and a12345678 is the password.
-    $db_conn = OCILogon("ora_fulino", "a72201767", "dbhost.students.cs.ubc.ca:1522/stu");
+    $db_conn = OCILogon("ora_daniren", "a86258282", "dbhost.students.cs.ubc.ca:1522/stu");
 
     if ($db_conn) {
         debugAlertMessage("Database is Connected");
@@ -103,6 +103,22 @@ See the sample code below for how this function is used */
             $success = False;
         }
     }
+}
+
+function getDefaultResumeTuples() {
+    $resumeTuple = array (":bind1" => "111", ":bind2" => "Yan", ":bind3" => "Groundbreaking research", ":bind4" => "Undergrad, Masters, PHD: Harvard");
+    $resumeTuple2 = array (":bind1" => "222", ":bind2" => "Yan", ":bind3" => "Groundbreaking research", ":bind4" => "Undergrad, Masters, PHD: Harvard");
+    $resumeTuple3 = array (":bind1" => "333", ":bind2" => "Yan", ":bind3" => "Groundbreaking research", ":bind4" => "Undergrad, Masters, PHD: Harvard");
+    $allRestuples = array ($resumeTuple, $resumeTuple2, $resumeTuple3);
+    return $allRestuples;
+}
+
+function getDefaultCoverTuples() {
+    $coverTuple = array (":bind1" => "111", ":bind2" => "I want this job");
+    $coverTuple2 = array (":bind1" => "222", ":bind2" => "I am most qualified");
+    $coverTuple3 = array (":bind1" => "333", ":bind2" => "I love databases");
+    $allCovertuples = array ($coverTuple, $coverTuple2, $coverTuple3);
+    return $allCovertuples;
 }
 function getDefaultJobTuples() {
     $jobTuple1 = array (":bind1" => "Assistant Chef", ":bind2" => "00001", ":bind3" => "5",":bind4" => "40534", ":bind5" => "Part",

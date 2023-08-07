@@ -37,6 +37,8 @@
         <?php
         include 'functions.php';
         $positionID = $_GET['posID'];
+        $positionID2 = $_GET['appID'];
+
         function handlePOSTRequest() {
             if (connectToDB()) {
                 if (array_key_exists('coverRequest', $_POST)) {
@@ -53,6 +55,8 @@
             handlePOSTRequest();
             echo "handling post request";
         } else if (isset($_GET['posID'])) {
+            handleGETRequest();
+        } else if (isset($_GET['appID'])) {
             handleGETRequest();
         } 
         if (isset($_POST['appRequest'])) {
@@ -76,15 +80,40 @@
             OCICommit($db_conn);
             
         }
+
+        // NEW:
+        function handleAppRequest() {
+            global $db_conn;
+            $positionID2 = $_GET['appID'];
+            $resName = executePlainSQL("SELECT * FROM resumeTable WHERE app_num = $positionID2");
+            $coverName = executePlainSQL("SELECT * FROM coverTable WHERE app_num = $positionID2")
+            while ($row = OCI_Fetch_Array($resName, OCI_BOTH)) {
+                echo "<br>";
+                echo "Name: " . $row["NAME"] . "<br><br>"; //or just use "echo $row[0]"
+                echo "Experience: " . $row["EXPERIENCE"] . "<br>";
+                echo "Education: " . $row["EDUCATION"] . "<br>";
+            }
+            while ($row = OCI_Fetch_Array($coverName, OCI_BOTH)) {
+                echo "<br>";
+                echo "My cover letter: " . $row["INTRODUCTION"] . "<br><br>"; //or just use "echo $row[0]"
+            }
+            
+            OCICommit($db_conn);
+            
+        }
+
+
         function handleGETRequest() {
             if (connectToDB()) {
                 if (array_key_exists('posID', $_GET)) {
                     handleJobRequest();
-                } 
+                } if (array_key_exists('appID', $_GET)) {
+                    handleAppRequest();
+                }
                 disconnectFromDB();
             }
         }
-        
+
         ?>
         <div id="group" class="application">
             <button onclick="applyFor()">New Application</button>

@@ -129,6 +129,21 @@
             echo "</table>";
         }
 
+        // res/cv details hyperlinked to the account application number 
+        function printResultApplication($result) {
+            echo "<br>Retrieved data from table storeAppTable:<br>";
+            echo "<table>";
+            echo "<tr><th>App Num #</th><th>Apply Date</th><th>Account Number</th></tr>";
+
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                echo "<tr><td>";
+            //     echo $row["APP_NUM"] . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>";
+            echo "<tr><td>" . '<a target = "_blank" href="https://www.students.cs.ubc.ca/~daniren/applications.php?appID='.$row['APP_NUM'].' ">' . $row['APP_NUM'] . "</a>" . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>"; //or just use "echo $row[0]"
+            }
+            echo "</table>";
+        }
+
+
         function printResultInterview($result) {
             echo "<br>Retrieved data from table interviewTable:<br>";
             echo "<table>";
@@ -141,6 +156,8 @@
             echo "</table>";
         }
 
+
+
         function printResultAccount($result) {
             echo "<br>Retrieved data from table accountTable:<br>";
             echo "<table>";
@@ -152,17 +169,7 @@
             }
             echo "</table>";
         }
-        function printResultApplication($result) {
-            echo "<br>Retrieved data from table storeAppTable:<br>";
-            echo "<table>";
-            echo "<tr><th>Application #</th><th>Apply Date</th><th>Account #</th></tr>";
 
-            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>";
-                echo $row["APP_NUM"] . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>";
-            }
-            echo "</table>";
-        }
 
         function printApplicationCover($result) {
             echo "<br>Retrieved data from table coverTable:<br>";
@@ -386,6 +393,8 @@
             executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", getDefaultInterviewTuples());
             executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", getDefaultAccountTuples());
             executeBoundSQL("insert into storeAppTable values (:bind1, :bind2, :bind3)", getDefaultAppTuples());
+            executeBoundSQL("insert into resumeTable values (:bind1, :bind2, :bind3, :bind4)", getDefaultResumeTuples());
+            executeBoundSQL("insert into coverTable values (:bind1, :bind2)", getDefaultCoverTuples());
 
             echo "<br> SUCCESS: default tuples inserted for all tuples<br>";
             OCICommit($db_conn);
