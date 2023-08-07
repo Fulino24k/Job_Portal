@@ -141,9 +141,22 @@ function getDefaultInterviewTuples() {
 }
 
 function getDefaultAccountTuples() {
-    $accountTuple = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", ":bind5" => "123456");
-    $allAccounttuples = array ($accountTuple);
+    $accountTuple = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", 
+    ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", ":bind5" => "1");
+    $accountTuple2 = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", 
+    ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", ":bind5" => "2");
+    $accountTuple3 = array (":bind1" => "Yan", ":bind2" => "yan@gmail.com", 
+    ":bind3" => "778-866-9999", ":bind4" => "123 TA Street", ":bind5" => "3");
+    $allAccounttuples = array ($accountTuple, $accountTuple2, $accountTuple3);
     return $allAccounttuples;
+}
+
+function getDefaultAppTuples() {
+    $accountTuple = array (":bind1" => "111", ":bind2" => "20001219", ":bind3" => "1");
+    $accountTuple2 = array (":bind1" => "222", ":bind2" => "20001219", ":bind3" => "2");
+    $accountTuple3 = array (":bind1" => "333", ":bind2" => "20001219", ":bind3" => "3");
+    $allApptuples = array ($accountTuple, $accountTuple2, $accountTuple3);
+    return $allApptuples;
 }
 
 // UNUSED FUNCTIONS KEPT HERE FOR BACKUP
