@@ -182,6 +182,8 @@
             }
             echo "</table>";
         }
+
+
         function printApplicationResume($result) {
             echo "<br>Retrieved data from table resumeTable:<br>";
             echo "<table>";
@@ -193,6 +195,8 @@
             }
             echo "</table>";
         }
+
+
         function handleCountJobRequest() {
             global $db_conn;
 
@@ -244,6 +248,9 @@
             $result = executePlainSQL("SELECT * FROM resumeTable");
             printApplicationResume($result);
         }
+ 
+
+
         ?>
         <form id="insertInterview" style="display: none" method="POST" action="project.php"> 
             <input type="hidden" id="insertInterviewQueryRequest" name="insertInterviewQueryRequest">

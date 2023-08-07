@@ -1,7 +1,3 @@
-// extra code for my own referenceID
-
-
-
 <html>
     <head>
         <title> CPSC 304 2023S T2 PHP/Oracle Project</title>
@@ -10,72 +6,100 @@
         <?php include 'project.css'; ?>
     </style>
     <body>
-        <h1> Application INFO </h1>
+        <h1> Resume and Cover Letter Details</h1>
         <hr/>
-        <script>
-            var hide = FALSE;
 
-            var condition = sessionStorage.getItem("key");
-            if (condition) {
-                var b = document.getElementById("group");
-                b.style.display = "none";
+        <?php
+        include 'functions.php';
+        $positionID = $_GET['appID'];
+
+
+        if (isset($_POST['Save']) || isset($_POST['reset'])){
+            handlePOSTRequest();
+            echo "handling post request";
+        } else if (isset($_GET['appID'])) { // important
+            handleGETRequest();
+        } 
+        if (isset($_POST['appRequest'])) {
+            handlePOSTRequest();
+        } else if (isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestAccount'])) {
+            handleGETRequest();
+        }
+
+     
+        function handleAppRequest() {
+            global $db_conn;
+            $resumeName = $_GET['appID'];
+            $coverName = $_GET['appID'];
+            $resumeName = executePlainSQL("SELECT * FROM resumeTable WHERE app_num = $resumeName");
+            $coverName = executePlainSQL("SELECT * FROM coverTable WHERE app_num = $coverName");
+
+            while ($row = OCI_Fetch_Array($resumeName, OCI_BOTH)) {
+                echo "Name: " . $row["NAME"] . "<br><br><br>"; //or just use "echo $row[0]"
+                echo "RESUME INFO". "<br><br>";
+                echo "My experience: " . $row["EXPERIENCE"] . "<br>";
+                echo "My education: " . $row["EDUCATION"] . "<br><br>";
             }
 
-            </script>
-        <?php
-include 'functions.php';
-$positionID2 = $_GET['appID'];
-function handlePOSTRequest() {
-    if (connectToDB()) {
-        if (array_key_exists('coverRequest', $_POST)) {
-            handleCoverRequest();
-        } else if (array_key_exists('resetTablesRequest', $_POST)) {
-            handleResetRequest();
-        } else if (array_key_exists('submitApp', $_POST)) {
-            handleSubmitRequest();
-        } 
-        disconnectFromDB();
-    }
-}
-if (isset($_POST['Save']) || isset($_POST['reset'])){
-    handlePOSTRequest();
-    echo "handling post request";
-} else if (isset($_GET['appID'])) {
-    handleGETRequest();
-} 
-if (isset($_POST['appRequest'])) {
-    handlePOSTRequest();
-} else if (isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestAccount'])) {
-    handleGETRequest();
-}
-function handleAppRequest() {
-    global $db_conn;
-    $positionID2 = $_GET['appID'];
-    $resName = executePlainSQL("SELECT * FROM resumeTable WHERE app_num = $positionID2");
-    $coverName = executePlainSQL("SELECT * FROM coverTable WHERE app_num = $positionID2")
-    while ($row = OCI_Fetch_Array($resName, OCI_BOTH)) {
-        echo "<br>";
-        echo "Name: " . $row["NAME"] . "<br><br>"; //or just use "echo $row[0]"
-        echo "Experience: " . $row["EXPERIENCE"] . "<br>";
-        echo "Education: " . $row["EDUCATION"] . "<br>";
-    }
-    while ($row = OCI_Fetch_Array($coverName, OCI_BOTH)) {
-        echo "<br>";
-        echo "My cover letter: " . $row["INTRODUCTION"] . "<br><br>"; //or just use "echo $row[0]"
-    }
-    
-    OCICommit($db_conn);
-}
-
-function handleGETRequest() {
-    if (connectToDB()) {
-        } if (array_key_exists('appID', $_GET)) {
-            handleAppRequest();
+            while ($row = OCI_Fetch_Array($coverName, OCI_BOTH)) {
+                echo "<br><br>";
+                echo "COVER LETTER INFO:". "<br><br>";
+                // echo "Name: " . $row["NAME"] . "<br><br>"; //or just use "echo $row[0]" 
+                // this name isn't printing properly BUT i realized we don't need to print it again since it's printed above already in Resume
+                echo "Introduction: " . $row["INTRODUCTION"] . "<br>";
+            }
+            
+            OCICommit($db_conn);
+            
         }
-        disconnectFromDB();
-    }
 
 
-    ?>
+        function handleGETRequest() {
+            if (connectToDB()) {
+                if (array_key_exists('appID', $_GET)) {
+                    handleAppRequest();
+                } 
+                disconnectFromDB();
+            }
+        }
+        
+        ?>
+  
+        <form id="buttons" method="GET" action="applications.php" name="fresh">
+            <input type="hidden" id="yeet" name="appID" value="$_GET['appID']">
+        </form>
+        <br>
+   
+        <!-- <?php
+        function handleSubmitRequest() {
+            global $db_conn;
+
+            //Getting the values from user and insert data into the table
+            $tupleCover = array (
+                ":bind1" => "333",
+                ":bind2" => $_POST['insCover']
+            );
+
+            $tupleResume = array (
+                ":bind1" => "333",
+                ":bind2" => $_POST['insName'],
+                ":bind3" => $_POST['insExp'],
+                ":bind4" => $_POST['insEdu'],
+            );
+
+            $cover = array (
+                $tupleCover
+            );
+
+            $resume = array (
+                $tupleResume
+            );
+
+            executeBoundSQL("insert into coverTable values (:bind1, :bind2)", $cover);
+            executeBoundSQL("insert into resumeTable values (:bind1, :bind2, :bind3, :bind4)", $resume);
+            OCICommit($db_conn);
+            echo "Application Submitted, Thank You!";
+        }
+        ?> -->
     </body>
 </html>
