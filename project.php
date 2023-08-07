@@ -7,10 +7,15 @@
     </style>
     <body>
         <h1> Welcome to application portal for the BEST company! </h1>
-        <p>Pick an option below to get started with</p><hr />
+        <p>If this is your first time running, please press "reset all tables" below!</p><hr />
+
+        <form id="reset" method="POST" action="project.php">
+            <input type="hidden" id="resetAllRequest" name="resetAllRequest">
+            <p><input type="submit" value="Reset All Tables" name="resetAll"></p>
+        </form>
 
         <div id="group" class="options-employee">
-            <button onclick="appliesFor()">Browse Job Listings</button>
+            <button onclick="browseJob()">Browse Job Listings</button>
             <button>Past Applications</button>
             <button onclick="upcomingInterviews()">Upcoming Interviews</button>
             <button onclick="acceptDeny()">Accept/Deny Offer</button>
@@ -19,6 +24,11 @@
         <p id="demo"></p>
         <script>
             var show = false;
+            function browseJob() {
+                document.getElementById('printJobForm').submit();
+                document.getElementById('submitPrintJob');
+                
+            }
             function appliesFor() {
                 var r = document.getElementById("reset");
                 var a = document.getElementById("insertAccount");
@@ -61,115 +71,52 @@
                 show = true;
             }
 
-
         </script>
 
-        <form id="reset" style="display: none" method="POST" action="project.php">
-            <input type="hidden" id="resetAllRequest" name="resetAllRequest">
-            <p><input type="submit" value="Reset All Tables" name="resetAll"></p>
-        </form>
-
-        <form id="insertInterview" style="display: none" method="POST" action="project.php"> 
-            <input type="hidden" id="insertInterviewQueryRequest" name="insertInterviewQueryRequest">
-            Interviewer: <input type="text" name="insInt"> <br /><br />
-            Interviewee: <input type="text" name="insIntee"> <br /><br />
-            IntDate: <input type="text" name="insIntDate>"> <br /><br />
-            <input type="submit" value="Insert" name="insertSubmitInterview"></p>
-        </form>
-
-        <h2 id="accHead" style="display: none"> Add Account Information</h2>
-        <form id="insertAccount" style="display: none" method="POST" action="project.php"> 
-            <input type="hidden" id="insertAccountQueryRequest" name="insertAccountQueryRequest">
-            Name: <input type="text" name="insName"> <br /><br />
-            Email: <input type="text" name="insEmail"> <br /><br />
-            PhoneNumber: <input type="text" name="insPhone"> <br /><br />
-            Address: <input type="text" name="insAddress"> <br /><br />
-            <!-- AccountNumber: <input type="text" name="insNum>"> <br /><br /> -->
-            <!-- they shouldn't input account number, acc# is generated for them-->
-            <input type="submit" value="Insert" name="insertSubmitAccount"></p>
-        </form>
-
-        <form id="updateAccount" style="display: none" method="POST" action="project.php"> 
-            <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
-            Old Address: <input type="text" name="oldAddress"> <br /><br />
-            New Address: <input type="text" name="newAddress"> <br /><br />
-
-            <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
-        </form>
         
-        <hr/>
-
-        <form id="updatePhone" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
-            Old Phone Number: <input type="text" name="oldPhone"> <br /><br />
-            New Phone Number: <input type="text" name="newPhone"> <br /><br />
-
-            <input type="submit" value="UpdatePhone" name="updateSubmitAccount"></p>
-        </form>
-
-        <hr/>
-
-        <h2>Print Tuples from jobTable</h2>
-        <form id="printJob" method="GET" action="project.php"> 
-            <input type="hidden" id="printRequest" name="printRequest">
-            <input type="submit" name="printJob"></p>
-        </form>
-
-        <hr/>
-
-        <h2>Print Tuples from Application Table</h2>
-        <form id="printApp" method="GET" action="project.php">
-            <input type="hidden" id="printAppRequest" name="printAppRequest">
-            <input type="submit" name="printApp"></p>
-        </form>
-
-        <hr/>
-
-        <h2>Print Tuples from interviewTable</h2>
-        <form id="printInterview" method="GET" action="project.php"> 
-            <input type="hidden" id="printRequestInterview" name="printRequestInterview">
-            <input type="submit" name="printInterview"></p>
-        </form>
-        <hr />
-
-        <h2>Print Tuples from accountTable</h2>
-        <form id="printAccount" method="GET" action="project.php"> 
-            <input type="hidden" id="printRequestAccount" name="printRequestAccount">
-            <input type="submit" name="printAccount"></p>
-        </form>
-
-        <hr/>
-
-
-        <h2>Update Address</h2>
-        <p>Input values are sensitive, please ensure address is spelled correctly.</p>
-
-        <form method="POST" action="project.php"> 
-            <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
-            Old Address: <input type="text" name="oldAddress"> <br /><br />
-            New Address: <input type="text" name="newAddress"> <br /><br />
-
-            <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
-        </form>
-        <hr/>
-
-        <h2>Update Phone Number</h2>
-        <p>Input values are sensitive, please ensure phone number is correct and in the format xxx-xxx-xxxx.</p>
-
-        <form method="POST" action="project.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
-            Old Phone Number: <input type="text" name="oldPhone"> <br /><br />
-            New Phone Number: <input type="text" name="newPhone"> <br /><br />
-
-            <input type="submit" value="UpdatePhone" name="updateSubmitAccount"></p>
-        </form>
-
-        <hr/>
-
-        <p> ALL PHP ECHOS: </p>
         <?php
         include 'functions.php';
+        if (isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) 
+            || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest'])) {
+            handleGETRequest();
+        }
+        // HANDLE ALL POST ROUTES
+	    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
+        function handlePOSTRequest() {
+            if (connectToDB()) {
+                if (array_key_exists('resetAllRequest', $_POST)) {
+                    handleResetAllRequest();
+                } else if (array_key_exists('updateAccountQueryRequest', $_POST)) {
+                    handleAccountUpdateRequest();
+                } else if (array_key_exists('updatePhoneQueryRequest', $_POST)) {
+                    handlePhoneUpdateRequest(); 
+                } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
+                    handleInsertInterviewRequest();
+                } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
+                    handleInsertAccountRequest();
+                } 
+                disconnectFromDB();
+            }
+        }
+        
+        // test commit
+        // HANDLE ALL GET ROUTES
+        // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
+        function handleGETRequest() {
+            if (connectToDB()) {
+                if (array_key_exists('printJob', $_GET)) {
+                    handleCountJobRequest();
+                } else if (array_key_exists('printInterview', $_GET)) {
+                    handleCountInterviewRequest();
+                } else if (array_key_exists('printAccount', $_GET)) {
+                    handleCountAccountRequest();
+                } else if (array_key_exists('printApp', $_GET)) {
+                    handleCountApplicationRequest();
+                }
 
+                disconnectFromDB();
+            }
+        }
         function printResultJob($result) {
             echo "<br>Retrieved data from table jobTable:<br>";
             echo "<table>";
@@ -239,6 +186,154 @@
             }
             echo "</table>";
         }
+        function handleCountJobRequest() {
+            global $db_conn;
+
+            $result = executePlainSQL("SELECT Count(*) FROM jobTable");
+
+            if (($row = oci_fetch_row($result)) != false) {
+                echo "<br> The number of tuples in jobTable: " . $row[0] . "<br>";
+            }
+            $result = executePlainSQL("SELECT * FROM jobTable");
+            printResultJob($result);
+        }
+
+        function handleCountInterviewRequest() {
+            global $db_conn;
+
+            $result = executePlainSQL("SELECT Count(*) FROM interviewTable");
+
+            if (($row = oci_fetch_row($result)) != false) {
+                echo "<br> The number of tuples in interviewTable: " . $row[0] . "<br>";
+            }
+            $result = executePlainSQL("SELECT * FROM interviewTable");
+            printResultInterview($result);
+        }
+
+        function handleCountAccountRequest() {
+            global $db_conn;
+
+            $result = executePlainSQL("SELECT Count(*) FROM accountTable");
+
+            if (($row = oci_fetch_row($result)) != false) {
+                echo "<br> The number of tuples in accountTable: " . $row[0] . "<br>";
+            }
+            $result = executePlainSQL("SELECT * FROM accountTable");
+            printResultAccount($result);
+        }
+
+        function handleCountApplicationRequest() {
+            global $db_conn;
+
+            $result = executePlainSQL("SELECT Count(*) FROM storeAppTable");
+
+            if (($row = oci_fetch_row($result)) != false) {
+                echo "<br> The number of tuples in storeAppTable: " . $row[0] . "<br>";
+            }
+            $result = executePlainSQL("SELECT * FROM storeAppTable");
+            printResultApplication($result);
+            $result = executePlainSQL("SELECT * FROM coverTable");
+            printApplicationCover($result);
+            $result = executePlainSQL("SELECT * FROM resumeTable");
+            printApplicationResume($result);
+        }
+        ?>
+        <form id="insertInterview" style="display: none" method="POST" action="project.php"> 
+            <input type="hidden" id="insertInterviewQueryRequest" name="insertInterviewQueryRequest">
+            Interviewer: <input type="text" name="insInt"> <br /><br />
+            Interviewee: <input type="text" name="insIntee"> <br /><br />
+            IntDate: <input type="text" name="insIntDate>"> <br /><br />
+            <input type="submit" value="Insert" name="insertSubmitInterview"></p>
+        </form>
+
+        <h2 id="accHead" style="display: none"> Add Account Information</h2>
+        <form id="insertAccount" style="display: none" method="POST" action="project.php"> 
+            <input type="hidden" id="insertAccountQueryRequest" name="insertAccountQueryRequest">
+            Name: <input type="text" name="insName"> <br /><br />
+            Email: <input type="text" name="insEmail"> <br /><br />
+            PhoneNumber: <input type="text" name="insPhone"> <br /><br />
+            Address: <input type="text" name="insAddress"> <br /><br />
+            <!-- AccountNumber: <input type="text" name="insNum>"> <br /><br /> -->
+            <!-- they shouldn't input account number, acc# is generated for them-->
+            <input type="submit" value="Insert" name="insertSubmitAccount"></p>
+        </form>
+
+        <form id="updateAccount" style="display: none" method="POST" action="project.php"> 
+            <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
+            Old Address: <input type="text" name="oldAddress"> <br /><br />
+            New Address: <input type="text" name="newAddress"> <br /><br />
+
+            <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
+        </form>
+        
+        
+
+        <form id="updatePhone" style="display: none" method="POST" action="project.php"> <!--refresh page when submitted-->
+            <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
+            Old Phone Number: <input type="text" name="oldPhone"> <br /><br />
+            New Phone Number: <input type="text" name="newPhone"> <br /><br />
+
+            <input type="submit" value="UpdatePhone" name="updateSubmitAccount"></p>
+        </form>
+
+    
+        <form id="printJobForm" method="GET" action="project.php"> 
+            <input type="hidden" id="printRequest" name="printRequest">
+            <input id="submitPrintJob" type="hidden" name="printJob"></p>
+        </form>
+
+        <hr/>
+
+        <h2>Print Tuples from Application Table</h2>
+        <form id="printApp" method="GET" action="project.php">
+            <input type="hidden" id="printAppRequest" name="printAppRequest">
+            <input type="submit" name="printApp"></p>
+        </form>
+
+        <hr/>
+
+        <h2>Print Tuples from interviewTable</h2>
+        <form id="printInterview" method="GET" action="project.php"> 
+            <input type="hidden" id="printRequestInterview" name="printRequestInterview">
+            <input type="submit" name="printInterview"></p>
+        </form>
+        <hr />
+
+        <h2>Print Tuples from accountTable</h2>
+        <form id="printAccount" method="GET" action="project.php"> 
+            <input type="hidden" id="printRequestAccount" name="printRequestAccount">
+            <input type="submit" name="printAccount"></p>
+        </form>
+
+        <hr/>
+
+
+        <h2>Update Address</h2>
+        <p>Input values are sensitive, please ensure address is spelled correctly.</p>
+
+        <form method="POST" action="project.php"> 
+            <input type="hidden" id="updateAccountQueryRequest" name="updateAccountQueryRequest">
+            Old Address: <input type="text" name="oldAddress"> <br /><br />
+            New Address: <input type="text" name="newAddress"> <br /><br />
+
+            <input type="submit" value="UpdateAccount" name="updateSubmitAccount"></p>
+        </form>
+        <hr/>
+
+        <h2>Update Phone Number</h2>
+        <p>Input values are sensitive, please ensure phone number is correct and in the format xxx-xxx-xxxx.</p>
+
+        <form method="POST" action="project.php"> <!--refresh page when submitted-->
+            <input type="hidden" id="updatePhoneQueryRequest" name="updatePhoneQueryRequest">
+            Old Phone Number: <input type="text" name="oldPhone"> <br /><br />
+            New Phone Number: <input type="text" name="newPhone"> <br /><br />
+
+            <input type="submit" value="UpdatePhone" name="updateSubmitAccount"></p>
+        </form>
+        <hr/>
+        
+        <p> ALL PHP ECHOS: </p>
+        <?php
         function handleResetAllRequest() {
             global $db_conn;
             // Drop old table
@@ -357,103 +452,15 @@
             executePlainSQL("UPDATE accountTable SET phone_number='" . $new_phone . "' WHERE phone_number='" . $old_phone . "'");
             OCICommit($db_conn);
         }
-        function handleCountJobRequest() {
-            global $db_conn;
-
-            $result = executePlainSQL("SELECT Count(*) FROM jobTable");
-
-            if (($row = oci_fetch_row($result)) != false) {
-                echo "<br> The number of tuples in jobTable: " . $row[0] . "<br>";
-            }
-            $result = executePlainSQL("SELECT * FROM jobTable");
-            printResultJob($result);
-        }
-
-        function handleCountInterviewRequest() {
-            global $db_conn;
-
-            $result = executePlainSQL("SELECT Count(*) FROM interviewTable");
-
-            if (($row = oci_fetch_row($result)) != false) {
-                echo "<br> The number of tuples in interviewTable: " . $row[0] . "<br>";
-            }
-            $result = executePlainSQL("SELECT * FROM interviewTable");
-            printResultInterview($result);
-        }
-
-        function handleCountAccountRequest() {
-            global $db_conn;
-
-            $result = executePlainSQL("SELECT Count(*) FROM accountTable");
-
-            if (($row = oci_fetch_row($result)) != false) {
-                echo "<br> The number of tuples in accountTable: " . $row[0] . "<br>";
-            }
-            $result = executePlainSQL("SELECT * FROM accountTable");
-            printResultAccount($result);
-        }
-
-        function handleCountApplicationRequest() {
-            global $db_conn;
-
-            $result = executePlainSQL("SELECT Count(*) FROM storeAppTable");
-
-            if (($row = oci_fetch_row($result)) != false) {
-                echo "<br> The number of tuples in storeAppTable: " . $row[0] . "<br>";
-            }
-            $result = executePlainSQL("SELECT * FROM storeAppTable");
-            printResultApplication($result);
-            $result = executePlainSQL("SELECT * FROM coverTable");
-            printApplicationCover($result);
-            $result = executePlainSQL("SELECT * FROM resumeTable");
-            printApplicationResume($result);
-        }
-
-
-        // HANDLE ALL POST ROUTES
-	    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
-        function handlePOSTRequest() {
-            if (connectToDB()) {
-                if (array_key_exists('resetAllRequest', $_POST)) {
-                    handleResetAllRequest();
-                } else if (array_key_exists('updateAccountQueryRequest', $_POST)) {
-                    handleAccountUpdateRequest();
-                } else if (array_key_exists('updatePhoneQueryRequest', $_POST)) {
-                    handlePhoneUpdateRequest(); 
-                } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
-                    handleInsertInterviewRequest();
-                } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
-                    handleInsertAccountRequest();
-                } 
-                disconnectFromDB();
-            }
-        }
-        // test commit
-        // HANDLE ALL GET ROUTES
-        // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
-        function handleGETRequest() {
-            if (connectToDB()) {
-                if (array_key_exists('printJob', $_GET)) {
-                    handleCountJobRequest();
-                } else if (array_key_exists('printInterview', $_GET)) {
-                    handleCountInterviewRequest();
-                } else if (array_key_exists('printAccount', $_GET)) {
-                    handleCountAccountRequest();
-                } else if (array_key_exists('printApp', $_GET)) {
-                    handleCountApplicationRequest();
-                }
-
-                disconnectFromDB();
-            }
-        }
-
+        
         if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) 
             || isset($_POST['insertSubmitAccount']) || isset($_POST['updateSubmitAccount']) ) {
             handlePOSTRequest();
-        } else if (isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) 
-            || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest'])) {
-            handleGETRequest();
-        }
+        } 
+
+        
+
+        
         ?>
     </body>
 </html>
