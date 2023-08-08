@@ -108,15 +108,15 @@ See the sample code below for how this function is used */
 function getDefaultResumeTuples() {
     $resumeTuple = array (":bind1" => "111", ":bind2" => "Yan", ":bind3" => "Groundbreaking database research", ":bind4" => "Undergrad, Masters, PHD: Harvard, Additional AWS certifications");
     $resumeTuple2 = array (":bind1" => "222", ":bind2" => "Yan", ":bind3" => "25 Microsoft internships", ":bind4" => "Undergrad, Masters, PHD: Harvard, 60 coding bootcamps");
-    $resumeTuple3 = array (":bind1" => "333", ":bind2" => "Yan", ":bind3" => "50 years of experience with C++", ":bind4" => "Undergrad, Masters, PHD: Harvard");
+    $resumeTuple3 = array (":bind1" => "333", ":bind2" => "Yan", ":bind3" => "50 years of experience with C++", ":bind4" => "Undergrad, Masters, PHD: Harvard, Certified Analytics Professional accredication");
     $allRestuples = array ($resumeTuple, $resumeTuple2, $resumeTuple3);
     return $allRestuples;
 }
 
 function getDefaultCoverTuples() {
-    $coverTuple = array (":bind1" => "111", ":bind2" => "I want this job.");
-    $coverTuple2 = array (":bind1" => "222", ":bind2" => "I am most qualified.");
-    $coverTuple3 = array (":bind1" => "333", ":bind2" => "I love databases.");
+    $coverTuple = array (":bind1" => "111", ":bind2" => "I saw this job and thought I was a really good fit. I want this job.");
+    $coverTuple2 = array (":bind1" => "222", ":bind2" => "I am most qualified. I have a lot of experience in this field.");
+    $coverTuple3 = array (":bind1" => "333", ":bind2" => "I love databases. Databases are life-changing and I can help you change more lives!!!!!");
     $allCovertuples = array ($coverTuple, $coverTuple2, $coverTuple3);
     return $allCovertuples;
 }
