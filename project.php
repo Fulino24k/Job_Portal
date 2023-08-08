@@ -65,17 +65,22 @@
 
         function handlePrintJobListing() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM jobTable");
+            $result = executePlainSQL("SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule FROM JR1_ScheduleSalary ss 
+            JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
+            JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications JOIN JR5_PositionDuties p ON dq.Duties = p.Duties");
             echo "<b>All Available Job Listings:</b><br><br>";
             echo "<table>";
-            echo "<tr><th>Position</th><th>ReferenceID</th><th>Spots Left</th><th>Annual Salary</th><th>Full/Part</th></tr>";
+            echo "<tr><th>Position</th><th>ReferenceID</th><th>Spots Left</th><th>Annual Salary</th><th>Work Type</th></tr>";
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . '<a target = "_blank" 
-                    href="https://www.students.cs.ubc.ca/~fulino/jobListing.php?posID='. $row['REFERENCEID'].' ">' . 
-                    $row['POSITION'] . "</a>" . "</td><td>" . $row["REFERENCEID"] . "</td><td>" . $row["SPOTS_LEFT"] . 
-                    "</td><td>" . $row["ANNUAL_SALARY"] . "</td><td>" . $row["WORK_TYPE"] . "</td></tr>";
+                echo "<tr><td>" . $row[0]. "</td><td>" . $row[1]. "</td><td>" .$row[2]. "</td><td>" . $row[3]. "</td><td>" .$row[4]. "</td><tr>" ;
             }
+            // while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+            //     echo "<tr><td>" . '<a target = "_blank" 
+            //         href="https://www.students.cs.ubc.ca/~aarwo74/jobListing.php?posID='. $row['REFERENCEID'].' ">' . 
+            //         $row['POSITION'] . "</a>" . "</td><td>" . $row["REFERENCEID"] . "</td><td>" . $row["SPOTS_LEFT"] . 
+            //         "</td><td>" . $row["ANNUAL_SALARY"] . "</td><td>" . $row["WORK_TYPE"] . "</td></tr>";
+            // }
             echo "</table>";
         }
 
