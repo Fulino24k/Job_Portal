@@ -115,9 +115,9 @@ grant select on CoverLetter to public;
 
 CREATE TABLE Resumes(
 job_num INTEGER PRIMARY KEY,
-education CHAR(300),
-experience CHAR(300),
 resName CHAR(30),
+experience CHAR(300),
+education CHAR(300),
 FOREIGN KEY(job_num) REFERENCES StoreApplication(job_app_num)
 );
 
@@ -545,19 +545,19 @@ VALUES(5, 'Hi my name is Yan and please recruit me.');
 
 -- Resumes 
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(1, 'Sean', '50 years in Google', '2 Bachelors');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(2, 'Dani', '50 years in Microsoft', '3 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(3, 'Aaron', '50 years in Tesla', '1 Bachelor, 1 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(4, 'Gittu', '50 years in UBC', '1 Doctorate');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(5, 'Yan', '50 years in UBC', '5 Masters');
 
 -- INSERT INTO Resumes(job_num, education, experience, resName)
