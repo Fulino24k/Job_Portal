@@ -799,7 +799,7 @@ VALUES(5, 'Customer Service Experience');
 -- JR10 ReferenceID & Schedule
 
 INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
-VALUES(1, 'MWTHF');
+VALUES(1, 'MTWTHF');
 
 INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
 VALUES(2, 'Hybrid');
