@@ -609,11 +609,11 @@ VALUES(4, 4444);
 INSERT INTO Creates(job_referID, emp_employee_num)
 VALUES(5, 5555);
 
--- INSERT INTO Creates(job_referID, emp_employee_num)
--- VALUES(6, 6666);
+INSERT INTO Creates(job_referID, emp_employee_num)
+VALUES(6, 2222);
 
--- INSERT INTO Creates(job_referID, emp_employee_num)
--- VALUES(7, 6666);
+INSERT INTO Creates(job_referID, emp_employee_num)
+VALUES(7, 2222);
 
 -- Supervisor
 
