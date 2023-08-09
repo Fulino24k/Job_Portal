@@ -9,12 +9,6 @@
         <h1> Application For Job </h1>
         <hr/>
         <script>
-            var hide = FALSE;
-            var condition = sessionStorage.getItem("key");
-            if (condition) {
-                var b = document.getElementById("group");
-                b.style.display = "none";
-            }
             function applyFor() {
                 var a = document.getElementById("coverResume");
                 var b = document.getElementById("resume");
@@ -26,11 +20,9 @@
             function end() {
                 var b = document.getElementById("group");
                 b.style.display = "none";
-                hide = TRUE;
-                sessionStorage.setItem("key", hide);
                 var frm = document.getElementsByName('coverResume');
-                frm.submit(); // Submit the form
-                frm.reset();  // Reset all form data
+                frm.submit(); 
+                frm.reset();  
                 return false;
             }
         </script>
@@ -39,38 +31,37 @@
         $positionID = $_GET['posID'];
         function handlePOSTRequest() {
             if (connectToDB()) {
-                if (array_key_exists('coverRequest', $_POST)) {
-                    handleCoverRequest();
-                } else if (array_key_exists('resetTablesRequest', $_POST)) {
-                    handleResetRequest();
-                } else if (array_key_exists('submitApp', $_POST)) {
+                if (array_key_exists('submitApp', $_POST)) {
                     handleSubmitRequest();
                 } 
                 disconnectFromDB();
             }
         }
-        if (isset($_POST['Save']) || isset($_POST['reset'])){
-            handlePOSTRequest();
-            echo "handling post request";
-        } else if (isset($_GET['posID'])) {
+
+        if (isset($_GET['posID'])) {
             handleGETRequest();
         } 
-        if (isset($_POST['appRequest'])) {
-            handlePOSTRequest();
-        } else if (isset($_GET['printRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestAccount'])) {
-            handleGETRequest();
-        }
+        
 
         function handleJobRequest() {
             global $db_conn;
             $positionID = $_GET['posID'];
-            $resultName = executePlainSQL("SELECT * FROM jobTable WHERE referenceID = $positionID");
+            $resultName = executePlainSQL("SELECT * FROM 
+                (SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, 
+                ss.ShiftSchedule, q.Qualifications, dq.Duties
+                FROM JR1_ScheduleSalary ss 
+                JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule 
+                JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID 
+                JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
+                JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications 
+                JOIN JR5_PositionDuties p ON dq.Duties = p.Duties)
+                WHERE referenceID = $positionID");
 
             while ($row = OCI_Fetch_Array($resultName, OCI_BOTH)) {
                 echo "<br>";
-                echo "Applying For Position: " . $row["POSITION"] . "<br><br>"; //or just use "echo $row[0]"
-                echo "The qualifications for this job: " . $row["QUALIFICATION"] . "<br>";
-                echo "The duties for this job: " . $row["DUTY"] . "<br>";
+                echo "<b>Applying For Position:</b><ul><li>" . $row["POSITIONNAME"] . "</li></ul>"; //or just use "echo $row[0]"
+                echo "<b>The qualifications for this job:</b><ul><li>" . $row["QUALIFICATIONS"] . "</li></ul>";
+                echo "<b>The duties for this job:</b><ul><li>" . $row["DUTIES"] . "</li></ul><br>";
             }
             
             OCICommit($db_conn);
@@ -84,24 +75,19 @@
                 disconnectFromDB();
             }
         }
-        
         ?>
+
         <div id="group" class="application">
             <button onclick="applyFor()">New Application</button>
             <button>Load Application</button>
         </div>
-        
-        <!-- <form id="buttons" method="POST" action="jobListing.php">
-            <input type="hidden" id="showApp" name="showApp">
-            <input type="button" name="new" value="New Application" />
-            <input type="button" name="load" value="Load Application" />
-        </form> -->
 
         <form id="buttons" method="GET" action="jobListing.php" name="fresh">
             <input type="hidden" id="yeet" name="posID" value="$_GET['posID']">
         </form>
         <br>
-        <!-- <input type="hidden" id="submitJob" name="submitJob"> -->
+        
+        <!-- form to submit application -->
         <form id="coverResume"  method="POST" style="display: none" > 
             <p>Cover Letter:</p>
             <input type="hidden" id="appRequest" name="appRequest">
@@ -119,34 +105,41 @@
         </form>
 
         <?php
+        if (isset($_POST['appRequest'])) {
+            handlePOSTRequest();
+        }
         function handleSubmitRequest() {
             global $db_conn;
-
-            //Getting the values from user and insert data into the table
+            $tupleApp = array (
+                ":bind1" => "444",
+                ":bind2" => date("mdY"),
+                ":bind3" => "28485"
+            );
             $tupleCover = array (
-                ":bind1" => "333",
+                ":bind1" => "444",
                 ":bind2" => $_POST['insCover']
             );
-
             $tupleResume = array (
-                ":bind1" => "333",
+                ":bind1" => "444",
                 ":bind2" => $_POST['insName'],
                 ":bind3" => $_POST['insExp'],
                 ":bind4" => $_POST['insEdu'],
             );
-
+            $app = array (
+                $tupleApp
+            );
             $cover = array (
                 $tupleCover
             );
-
             $resume = array (
                 $tupleResume
             );
-
-            executeBoundSQL("insert into coverTable values (:bind1, :bind2)", $cover);
-            executeBoundSQL("insert into resumeTable values (:bind1, :bind2, :bind3, :bind4)", $resume);
+            executeBoundSQL("insert into StoreApplication values (:bind1, :bind2, :bind3)", $app);
+            executeBoundSQL("insert into CoverLetter values (:bind1, :bind2)", $cover);
+            executeBoundSQL("insert into Resumes values (:bind1, :bind2, :bind3, :bind4)", $resume);
             OCICommit($db_conn);
-            echo "Application Submitted, Thank You!";
+            
+            echo "<br><b>Application Submitted, Thank You!</b>";
         }
         ?>
     </body>
