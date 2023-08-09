@@ -76,24 +76,14 @@
             echo "<div><button onclick='createAcc()'>Create an Account</button><button onclick='updateAddy()'>Update Address</button><button onclick='updatePhone()'>Update Phone Number</button></div>";
         }
 
-
-        // one result will only allow for one fetch from OCI, so only one while loop for printing
         function handlePrintJobListing() {
             global $db_conn;
             echo "<b>All Job Listings:</b><br><br>";
             echo "<table>";
-            echo "<tr><th>Position</th><th>Spots Left</th><th>Annual Salary</th><th>Work Schedule</th></tr>";
-            $result = executePlainSQL("SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule
-                FROM JR1_ScheduleSalary ss 
-                JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule 
-                JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID 
-                JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
-                JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications 
-                JOIN JR5_PositionDuties p ON dq.Duties = p.Duties");
+            echo "<tr><th>Position</th><th>ReferenceID</th><th>Spots Left</th><th>Annual Salary</th><th>Work Type</th></tr>";
+
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . '<a target = "_blank" 
-                    href="https://www.students.cs.ubc.ca/~fulino/jobListing.php?posID='. $row[1].' ">' . 
-                    $row[0] . "</a>" . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . $row[4] . "</td></tr>";
+                echo "<tr><td>" . $row[0]. "</td><td>" . $row[1]. "</td><td>" .$row[2]. "</td><td>" . $row[3]. "</td><td>" .$row[4]. "</td><tr>" ;
             }
             echo "</table>";
             echo "<br>";
@@ -112,22 +102,21 @@
 
         function handlePrintInterview() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM Interview");
+            $result = executePlainSQL("SELECT * FROM interviewTable");
             echo "<b>All Upcoming Scheduled Interviews:</b><br><br>";
             echo "<table>";
             echo "<tr><th>Interviewer</th><th>Interviewee</th><th>IntDate</th></tr>";
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>";
-                echo $row["INTERVIEWER"] . "</td><td>" . $row["INTERVIEWEE"] . "</td><td>" . $row["DATE_"] . "</td></tr>";
+                echo $row["INTERVIEWER"] . "</td><td>" . $row["INTERVIEWEE"] . "</td><td>" . $row["INTDATE"] . "</td></tr>";
             }
             echo "</table>";
         }
 
         function handlePrintAccount() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM CreateAccount");
-            $result2 = executePlainSQL("SELECT * FROM CreateAccount");
+            $result = executePlainSQL("SELECT * FROM accountTable");
             echo "<br>Retrieved data from table accountTable:<br>";
             echo "<table>";
             echo "<tr><th>Name</th><th>Email</th><th>Phone Number</th><th>Address</th><th>Account Number</th></tr>";
@@ -142,11 +131,11 @@
 
         function handlePrintPastApplication() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM StoreApplication");
+            $result = executePlainSQL("SELECT * FROM storeAppTable");
             printResultApplication($result);
-            $result = executePlainSQL("SELECT * FROM CoverLetter");
+            $result = executePlainSQL("SELECT * FROM coverTable");
             printApplicationCover($result);
-            $result = executePlainSQL("SELECT * FROM Resumes");
+            $result = executePlainSQL("SELECT * FROM resumeTable");
             printApplicationResume($result);
         }
 
@@ -217,9 +206,9 @@
             echo "<tr><th>App Num #</th><th>Apply Date</th><th>Account Number</th></tr>";
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . '<a target = "_blank" 
-                    href="https://www.students.cs.ubc.ca/~daniren/applications.php?appID='.$row['JOB_APP_NUM'].' ">' . 
-                    $row['JOB_APP_NUM'] . "</a>" . "</td><td>" . $row["APPLYDATE"] . "</td><td>" . $row["ACCOUNT_ACC_NUM_SA"] . "</td></tr>";
+                echo "<tr><td>";
+            //     echo $row["APP_NUM"] . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>";
+            echo "<tr><td>" . '<a target = "_blank" href="https://www.students.cs.ubc.ca/~daniren/applications.php?appID='.$row['APP_NUM'].' ">' . $row['APP_NUM'] . "</a>" . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>"; //or just use "echo $row[0]"
             }
             echo "</table>";
         }
@@ -231,7 +220,7 @@
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>";
-                echo $row["JOB_APP_NUM_CV"] . "</td><td>" . $row["INTRODUCTION"] . "</td></tr>";
+                echo $row["APP_NUM"] . "</td><td>" . $row["INTRODUCTION"] . "</td></tr>";
             }
             echo "</table>";
         }
@@ -244,7 +233,7 @@
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>";
-                echo $row["JOB_NUM"] . "</td><td>" . $row["RESNAME"] . "</td><td>" . $row["EXPERIENCE"] . "</td><td>" . $row["EDUCATION"] . "</td></tr>";
+                echo $row["APP_NUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["EXPERIENCE"] . "</td><td>" . $row["EDUCATION"] . "</td></tr>";
             }
             echo "</table>";
         }
@@ -389,7 +378,7 @@
 
         <form id="printAccount" style="display: none" method="GET" action="project.php"> 
             <input type="hidden" id="printRequestAccount" name="printRequestAccount">
-            <input type="submit" value="Print Account Tables"name="printAccount"></p>
+            <input type="hidden" name="printAccount"></p>
         </form>
         <!-- ----------------------------------------------------- -->
 

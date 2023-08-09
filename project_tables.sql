@@ -115,9 +115,9 @@ grant select on CoverLetter to public;
 
 CREATE TABLE Resumes(
 job_num INTEGER PRIMARY KEY,
-education CHAR(300),
-experience CHAR(300),
 resName CHAR(30),
+experience CHAR(300),
+education CHAR(300),
 FOREIGN KEY(job_num) REFERENCES StoreApplication(job_app_num)
 );
 
@@ -408,11 +408,11 @@ VALUES(4, 20);
 INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
 VALUES(5, 30);
 
--- INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
--- VALUES(6, 10);
+INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
+VALUES(6, 5);
 
--- INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
--- VALUES(7, 15);
+INSERT INTO JR3_ID_SpotNum(referenceID, num_of_Spots)
+VALUES(7, 5);
 
 -- R1 (Position & Name of Employer)
 
@@ -545,19 +545,19 @@ VALUES(5, 'Hi my name is Yan and please recruit me.');
 
 -- Resumes 
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(1, 'Sean', '50 years in Google', '2 Bachelors');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(2, 'Dani', '50 years in Microsoft', '3 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(3, 'Aaron', '50 years in Tesla', '1 Bachelor, 1 Masters');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(4, 'Gittu', '50 years in UBC', '1 Doctorate');
 
-INSERT INTO Resumes(job_num, education, experience, resName)
+INSERT INTO Resumes(job_num, resName, experience, education)
 VALUES(5, 'Yan', '50 years in UBC', '5 Masters');
 
 -- INSERT INTO Resumes(job_num, education, experience, resName)
@@ -744,11 +744,11 @@ VALUES('Meal Prep', 'Assistant Chef');
 INSERT INTO JR5_PositionDuties(Duties, PositionName)
 VALUES('Answer Calls', 'Customer Service Rep');
 
--- INSERT INTO JR5_PositionDuties(Duties, PositionName)
--- VALUES('Data Analysis', 'Financial Analyst');
+INSERT INTO JR5_PositionDuties(Duties, PositionName)
+VALUES('Data Analysis', 'Financial Analyst');
 
--- INSERT INTO JR5_PositionDuties(Duties, PositionName)
--- VALUES('SQL Queries', 'Database Intern');
+INSERT INTO JR5_PositionDuties(Duties, PositionName)
+VALUES('SQL Queries', 'Database Intern');
 
 -- JR7 Qualifications & Duties
 
@@ -767,11 +767,11 @@ VALUES('Proficiency in Food Handling', 'Meal Prep');
 INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
 VALUES('Customer Service Experience', 'Answer Calls');
 
--- INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
--- VALUES('Data Analyst Experience', 'Data Analysis');
+INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
+VALUES('Data Analyst Experience', 'Data Analysis');
 
--- INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
--- VALUES('SQL Certificate', 'SQL Queries');
+INSERT INTO JR7_DutyQualifications(Qualifications, Duties)
+VALUES('SQL Certificate', 'SQL Queries');
 
 -- JR9 ReferenceID & Qualifications
 
@@ -790,11 +790,11 @@ VALUES(4, 'Proficiency in Food Handling');
 INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
 VALUES(5, 'Customer Service Experience');
 
--- INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
--- VALUES(6, 'Data Analyst Experience');
+INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
+VALUES(6, 'Data Analyst Experience');
 
--- INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
--- VALUES(7, 'SQL Certificate');
+INSERT INTO JR9_ID_Qualifications(ReferenceID, Qualifications)
+VALUES(7, 'SQL Certificate');
 
 -- JR10 ReferenceID & Schedule
 
@@ -813,11 +813,17 @@ VALUES(4, 'WTHFS');
 INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
 VALUES(5, 'On-Call');
 
--- INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
--- VALUES(6, 'TTH');
+INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
+VALUES(1, 'Remote');
 
--- INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
--- VALUES(7, 'MWF');
+INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
+VALUES(2, 'Remote');
+
+INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
+VALUES(6, 'Hybrid');
+
+INSERT INTO JR10_ID_Shift(ReferenceID, ShiftSchedule)
+VALUES(7, 'Hybrid');
 
 -- AppliesFor
 
