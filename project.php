@@ -82,8 +82,8 @@
             global $db_conn;
             echo "<b>All Job Listings:</b><br><br>";
             echo "<table>";
-            echo "<tr><th>Position</th><th>Spots Left</th><th>Annual Salary</th><th>Work Schedule</th></tr>";
-            $result = executePlainSQL("SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule
+            echo "<tr><th>Position</th><th>Spots Left</th><th>Annual Salary</th><th>Work Schedule</th><th>Job Reference ID</th></tr>";
+            $result = executePlainSQL("SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule, sn.referenceID
                 FROM JR1_ScheduleSalary ss 
                 JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule 
                 JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID 
@@ -93,7 +93,7 @@
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>" . '<a target = "_blank" 
                     href="https://www.students.cs.ubc.ca/~fulino/jobListing.php?posID='. $row[1].' ">' . 
-                    $row[0] . "</a>" . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . $row[4] . "</td></tr>";
+                    $row[0] . "</a>" . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . $row[4] . "</td><td>" . $row[5] . "</td></tr>";
             }
             echo "</table>";
             echo "<br>";
