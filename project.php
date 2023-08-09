@@ -50,8 +50,7 @@
                 document.getElementById('printInterviewForm').submit(); }
 
             function acceptDeny() {
-                // TODO
-            }
+               document.getElementById('printOfferForm').submit(); }
 
             function manageAccount() {
                 document.getElementById('manageAccForm').submit(); }
@@ -63,7 +62,7 @@
 
         // HANDLE ALL GET REQUESTS
         // this is the position where all requests are printed
-        if (isset($_GET['printRequest']) || isset($_GET['manageRequest']) || isset($_GET['printRequestInterview']) 
+        if (isset($_GET['printRequest']) || isset($_GET['manageRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestOffer'])
             || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest'])) {
             handleGETRequest();
         }
@@ -123,6 +122,22 @@
             }
             echo "</table>";
         }
+
+        function handlePrintOffer() {
+            global $db_conn;
+            $result = executePlainSQL("SELECT * FROM AcceptDenyOffer");
+            echo "<b>All Offers:</b><br><br>";
+            echo "<table>";
+            echo "<tr><th>Employee #</th><th>Start Date</th><th>Email</th></tr>";
+
+            //  AcceptDenyOffer(offer_employee_num, StartDate, applicant_email)
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                echo "<tr><td>";
+                echo $row["OFFER_EMPLOYEE_NUM"] . "</td><td>" . $row["STARTDATE"] . "</td><td>" . $row["APPLICANT_EMAIL"] . "</td></tr>";
+            }
+            echo "</table>";
+        }
+
 
         function handlePrintAccount() {
             global $db_conn;
@@ -222,7 +237,7 @@
                     $row['JOB_APP_NUM'] . "</a>" . "</td><td>" . $row["APPLYDATE"] . "</td><td>" . $row["ACCOUNT_ACC_NUM_SA"] . "</td></tr>";
             }
             echo "</table>";
-        }
+        } 
 
         function printApplicationCover($result) {
             echo "<br><b>Retrieved data from table coverTable:</b><br><br>";
@@ -350,6 +365,17 @@
             IntDate: <input type="text" name="insIntDate>"> <br /><br />
             <input type="submit" value="Insert" name="insertSubmitInterview"></p>
         </form>
+
+        <!-- form for inserting offer items -->
+        <form id="insertOffer" style="display: none" method="POST" action="project.php"> 
+            <input type="hidden" id="insertOfferQueryRequest" name="insertOfferQueryRequest">
+            Employee Number: <input type="text" name="insNum"> <br /><br />
+            Start Date: <input type="text" name="insStart"> <br /><br />
+            Applicant Email: <input type="text" name="insEmail>"> <br /><br />
+            <input type="submit" value="Insert" name="insertSubmitOffer"></p>
+        </form>
+
+
         <!-- form for updating address -->
         <form id="updateAccount" style="display: none" method="POST" action="project.php"> 
             <input type="hidden" id="updateAddyRequest" name="updateAddyRequest">
@@ -387,6 +413,11 @@
             <input type="hidden" name="printInterview"></p>
         </form>
 
+        <form id="printOfferForm" method="GET" action="project.php"> 
+            <input type="hidden" id="printRequestOffer" name="printRequestOffer">
+            <input type="hidden" name="printOffer"></p>
+        </form>
+
         <form id="printAccount" style="display: none" method="GET" action="project.php"> 
             <input type="hidden" id="printRequestAccount" name="printRequestAccount">
             <input type="submit" value="Print Account Tables"name="printAccount"></p>
@@ -408,6 +439,20 @@
                 $tuple
             );
             executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", $alltuples);
+            OCICommit($db_conn);
+        }
+
+        function handleInsertOfferRequest() {
+            global $db_conn;
+            $tuple = array (
+                ":bind1" => $_POST['insNum'],
+                ":bind2" => $_POST['insStart'],
+                ":bind3" => $_POST['insEmail'],
+            );
+            $alltuples = array (
+                $tuple
+            );
+            executeBoundSQL("insert into offerTable values (:bind1, :bind2, :bind3)", $alltuples);
             OCICommit($db_conn);
         }
 
@@ -446,7 +491,7 @@
         
         // HANDLE ALL POST REQUESTS
         // This is where all post statements will print
-        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) || isset($_POST['insertSubmitAccount']) || 
+        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) || isset($_POST['insertSubmitAccount']) || isset($_POST['insertSubmitOffer']) || 
             isset($_POST['updateSubmitAddy']) || isset($_POST['updateSubmitPhone'])) {
             handlePOSTRequest();
         } 
@@ -461,6 +506,8 @@
                     handlePhoneUpdateRequest(); 
                 } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
                     handleInsertInterviewRequest();
+                } else if (array_key_exists('insertOfferQueryRequest', $_POST)) {
+                    handleInsertOfferRequest();
                 } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
                     handleInsertAccountRequest();
                 } else if (array_key_exists('filterCatRequest', $_POST)) {
@@ -479,6 +526,8 @@
                     handlePrintJobListing();
                 } else if (array_key_exists('printInterview', $_GET)) {
                     handlePrintInterview();
+                } else if (array_key_exists('printOffer', $_GET)) {
+                    handlePrintOffer();
                 } else if (array_key_exists('printAccount', $_GET)) {
                     handlePrintAccount();
                 } else if (array_key_exists('printApp', $_GET)) {
