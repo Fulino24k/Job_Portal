@@ -7,16 +7,6 @@
     </style>
     <body>
         <h1> Welcome to application portal for the BEST company! </h1>
-        <p>If this is your first time running, please press "reset all tables" below!</p>
-
-        <!-- button to reset and creat all tables for initialization -->
-        <form id="reset" method="POST" action="project.php">
-            <input type="hidden" id="resetAllRequest" name="resetAllRequest">
-            <p><input type="submit" value="Reset All Tables" name="resetAll"></p>
-        </form>
-
-        <hr/>
-
         <p>Please click any button to begin with:</p>
 
         <div id="group" class="options-employee">
@@ -25,7 +15,28 @@
             <button onclick="upcomingInterviews()">Upcoming Interviews</button>
             <button onclick="acceptDeny()">Accept/Deny Offer</button>
             <button onclick="manageAccount()">Manage Account</button>
+        </div>
+
+        <div id="filterGroup" style="display: none" class="none">
+            <button onclick="browseJob()">Filter By Category</button>
+            <button onclick="viewApp()">Find</button>
         </div><br><br><br>
+
+        <!-- form for filtering by category -->
+        <form id="filterCatForm" style="display: none" method="POST" action="project.php"> 
+            <input type="hidden" id="filterCatRequest" name="filterCatRequest">
+            Position<input type="checkbox" name="POSITIONNAME" value="POSITIONNAME"> 
+            , Spots Left<input type="checkbox" name="NUM_OF_SPOTS" value="NUM_OF_SPOTS"> 
+            , Annual Salary <input type="checkbox" name="SALARY" value="SALARY"> 
+            , Work Schedule<input type="checkbox" name="SHIFTSCHEDULE" value="SHIFTSCHEDULE"> 
+            <input type="submit" value="Filter By Category" name="filterCat" style="font-weight: bold;"></p>
+        </form>
+        <!-- <form id="filterFindForm" method="POST" action="project.php"> 
+            <input type="hidden" id="insertInterviewQueryRequest" name="insertInterviewQueryRequest">
+            Find: <input type="text" name="insInt"> 
+            In Category: <input type="text" name="insIntee"> 
+            <input type="submit" value="Filter By Find" name="filterFind"></p>
+        </form> -->
 
         <script>
             var show = false;
@@ -56,51 +67,67 @@
             || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest'])) {
             handleGETRequest();
         }
-
+        if (isset($_POST['filterCat'])) {
+            handlePOSTRequest();
+        }
         // function to echo all the buttons to manage account
         function printManageButtons() {
             echo "Please choose an option from below: <br><br>";
             echo "<div><button onclick='createAcc()'>Create an Account</button><button onclick='updateAddy()'>Update Address</button><button onclick='updatePhone()'>Update Phone Number</button></div>";
         }
 
+
+        // one result will only allow for one fetch from OCI, so only one while loop for printing
         function handlePrintJobListing() {
             global $db_conn;
-            $result = executePlainSQL("SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule FROM JR1_ScheduleSalary ss 
-            JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
-            JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications JOIN JR5_PositionDuties p ON dq.Duties = p.Duties");
-            echo "<b>All Available Job Listings:</b><br><br>";
+            echo "<b>All Job Listings:</b><br><br>";
             echo "<table>";
-            echo "<tr><th>Position</th><th>ReferenceID</th><th>Spots Left</th><th>Annual Salary</th><th>Work Type</th></tr>";
-
+            echo "<tr><th>Position</th><th>Spots Left</th><th>Annual Salary</th><th>Work Schedule</th></tr>";
+            $result = executePlainSQL("SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule
+                FROM JR1_ScheduleSalary ss 
+                JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule 
+                JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID 
+                JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
+                JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications 
+                JOIN JR5_PositionDuties p ON dq.Duties = p.Duties");
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . $row[0]. "</td><td>" . $row[1]. "</td><td>" .$row[2]. "</td><td>" . $row[3]. "</td><td>" .$row[4]. "</td><tr>" ;
+                echo "<tr><td>" . '<a target = "_blank" 
+                    href="https://www.students.cs.ubc.ca/~fulino/jobListing.php?posID='. $row[1].' ">' . 
+                    $row[0] . "</a>" . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . $row[4] . "</td></tr>";
             }
-            // while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-            //     echo "<tr><td>" . '<a target = "_blank" 
-            //         href="https://www.students.cs.ubc.ca/~aarwo74/jobListing.php?posID='. $row['REFERENCEID'].' ">' . 
-            //         $row['POSITION'] . "</a>" . "</td><td>" . $row["REFERENCEID"] . "</td><td>" . $row["SPOTS_LEFT"] . 
-            //         "</td><td>" . $row["ANNUAL_SALARY"] . "</td><td>" . $row["WORK_TYPE"] . "</td></tr>";
-            // }
             echo "</table>";
+            echo "<br>";
+
+            echo "Check any desired boxes for filtering by category:<br><br>";
+            // form for filtering
+            echo "<form id='filterCatForm' method='POST' action='project.php'> 
+            <input type='hidden' id='filterCatRequest' name='filterCatRequest'>
+            Position<input type='checkbox' name='POSITIONNAME' value='POSITIONNAME'> 
+            , Spots Left<input type='checkbox' name='NUM_OF_SPOTS' value='NUM_OF_SPOTS'> 
+            , Annual Salary <input type='checkbox' name='SALARY' value='SALARY'> 
+            , Work Schedule<input type='checkbox' name='SHIFTSCHEDULE' value='SHIFTSCHEDULE'> 
+            <input type='submit' value='Filter By Category' name='filterCat' style='font-weight: bold;'></p>
+            </form>";
         }
 
         function handlePrintInterview() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM interviewTable");
+            $result = executePlainSQL("SELECT * FROM Interview");
             echo "<b>All Upcoming Scheduled Interviews:</b><br><br>";
             echo "<table>";
             echo "<tr><th>Interviewer</th><th>Interviewee</th><th>IntDate</th></tr>";
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>";
-                echo $row["INTERVIEWER"] . "</td><td>" . $row["INTERVIEWEE"] . "</td><td>" . $row["INTDATE"] . "</td></tr>";
+                echo $row["INTERVIEWER"] . "</td><td>" . $row["INTERVIEWEE"] . "</td><td>" . $row["DATE_"] . "</td></tr>";
             }
             echo "</table>";
         }
 
         function handlePrintAccount() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM accountTable");
+            $result = executePlainSQL("SELECT * FROM CreateAccount");
+            $result2 = executePlainSQL("SELECT * FROM CreateAccount");
             echo "<br>Retrieved data from table accountTable:<br>";
             echo "<table>";
             echo "<tr><th>Name</th><th>Email</th><th>Phone Number</th><th>Address</th><th>Account Number</th></tr>";
@@ -115,12 +142,73 @@
 
         function handlePrintPastApplication() {
             global $db_conn;
-            $result = executePlainSQL("SELECT * FROM storeAppTable");
+            $result = executePlainSQL("SELECT * FROM StoreApplication");
             printResultApplication($result);
-            $result = executePlainSQL("SELECT * FROM coverTable");
+            $result = executePlainSQL("SELECT * FROM CoverLetter");
             printApplicationCover($result);
-            $result = executePlainSQL("SELECT * FROM resumeTable");
+            $result = executePlainSQL("SELECT * FROM Resumes");
             printApplicationResume($result);
+        }
+
+
+        // function to handle filtering request
+        function handleFilterRequest() {
+            global $db_conn;
+
+            $tuple = array ();
+            if (array_key_exists('POSITIONNAME', $_POST)) {
+                array_push($tuple,"PositionName, ");
+            } 
+            if (array_key_exists('NUM_OF_SPOTS', $_POST)) {
+                array_push($tuple,"Num_of_Spots, ");
+            } 
+            if (array_key_exists('SALARY', $_POST)) {
+                array_push($tuple,"Salary, ");
+            } 
+            if (array_key_exists('SHIFTSCHEDULE', $_POST)) {
+                array_push($tuple,"ShiftSchedule, ");
+            } 
+            if (!empty($tuple)) {
+                array_push($tuple,"referenceID, "); // add reference ID to grab from sql
+                $string = implode("",$tuple);
+                $sub = substr($string, 0, -2);
+                // echo $sub;
+                echo "<b>All Filtered Job Listings:</b><br><br>";
+                $result = executePlainSQL("SELECT $sub FROM 
+                (SELECT p.PositionName, sn.referenceID, sn.num_of_Spots, ss.Salary, 
+                ss.ShiftSchedule, q.Qualifications, dq.Duties
+                FROM JR1_ScheduleSalary ss 
+                JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule 
+                JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.referenceID 
+                JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
+                JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications 
+                JOIN JR5_PositionDuties p ON dq.Duties = p.Duties)");
+                
+                array_pop($tuple); // to remove the reference ID from header
+                $reverse = array_reverse($tuple);
+                $size = sizeof($reverse);
+                echo "<table><tr>";
+                while(!empty($reverse)) {
+                    echo "<th>" . substr(end($reverse), 0, -2) . "</th>";
+                    array_pop($reverse);
+                }
+                echo "</tr>";
+                while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                    echo "<tr>";
+                    for ($x = 0; $x < $size; $x++) {
+                        if ($x == 0) {
+                            echo "<td>" . '<a target = "_blank" 
+                            href="https://www.students.cs.ubc.ca/~fulino/jobListing.php?posID='. $row["REFERENCEID"].' ">' . 
+                            $row[0] . "</a>" . "</td>";
+                        } else {
+                            echo "<td>" . $row[$x] . "</td>";
+                        }
+                    }
+                    echo "</tr>";
+                }
+                echo "</table><br>";
+            }
+            
         }
         
         function printResultApplication($result) {
@@ -129,9 +217,9 @@
             echo "<tr><th>App Num #</th><th>Apply Date</th><th>Account Number</th></tr>";
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>";
-            //     echo $row["APP_NUM"] . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>";
-            echo "<tr><td>" . '<a target = "_blank" href="https://www.students.cs.ubc.ca/~daniren/applications.php?appID='.$row['APP_NUM'].' ">' . $row['APP_NUM'] . "</a>" . "</td><td>" . $row["APPLY_DATE"] . "</td><td>" . $row["ACCOUNT_NUMBER"] . "</td></tr>"; //or just use "echo $row[0]"
+                echo "<tr><td>" . '<a target = "_blank" 
+                    href="https://www.students.cs.ubc.ca/~daniren/applications.php?appID='.$row['JOB_APP_NUM'].' ">' . 
+                    $row['JOB_APP_NUM'] . "</a>" . "</td><td>" . $row["APPLYDATE"] . "</td><td>" . $row["ACCOUNT_ACC_NUM_SA"] . "</td></tr>";
             }
             echo "</table>";
         }
@@ -143,7 +231,7 @@
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>";
-                echo $row["APP_NUM"] . "</td><td>" . $row["INTRODUCTION"] . "</td></tr>";
+                echo $row["JOB_APP_NUM_CV"] . "</td><td>" . $row["INTRODUCTION"] . "</td></tr>";
             }
             echo "</table>";
         }
@@ -156,7 +244,7 @@
 
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>";
-                echo $row["APP_NUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["EXPERIENCE"] . "</td><td>" . $row["EDUCATION"] . "</td></tr>";
+                echo $row["JOB_NUM"] . "</td><td>" . $row["RESNAME"] . "</td><td>" . $row["EXPERIENCE"] . "</td><td>" . $row["EDUCATION"] . "</td></tr>";
             }
             echo "</table>";
         }
@@ -299,9 +387,9 @@
             <input type="hidden" name="printInterview"></p>
         </form>
 
-        <form id="printAccount" method="GET" action="project.php"> 
+        <form id="printAccount" style="display: none" method="GET" action="project.php"> 
             <input type="hidden" id="printRequestAccount" name="printRequestAccount">
-            <input type="hidden" name="printAccount"></p>
+            <input type="submit" value="Print Account Tables"name="printAccount"></p>
         </form>
         <!-- ----------------------------------------------------- -->
 
@@ -309,65 +397,6 @@
 
         <?php
         // ALL POST FUNCTIONS 
-        function handleResetAllRequest() {
-            global $db_conn;
-            // Drop old table
-            executePlainSQL("DROP TABLE jobTable");
-            executePlainSQL("DROP TABLE coverTable");
-            executePlainSQL("DROP TABLE resumeTable");
-            executePlainSQL("DROP TABLE storeAppTable");
-            executePlainSQL("DROP TABLE interviewTable");
-            executePlainSQL("DROP TABLE accountTable");
-
-            echo "<br> SUCCESS: all old tables dropped <br>";
-
-            executePlainSQL("CREATE TABLE accountTable (
-                name char(30), 
-                email char(30), 
-                phone_number char(30), 
-                address char(100), 
-                account_number int PRIMARY KEY)");
-            executePlainSQL("CREATE TABLE jobTable (
-                position char(30), 
-                referenceID char(30) PRIMARY KEY, 
-                spots_left int, 
-                annual_salary int, 
-                work_type char(30), 
-                qualification char(100), 
-                duty char(100))");
-            executePlainSQL("CREATE TABLE storeAppTable (
-                app_num int PRIMARY KEY, 
-                apply_date int,
-                account_number int,
-                FOREIGN KEY(account_number) REFERENCES accountTable(account_number))");
-            executePlainSQL("CREATE TABLE coverTable (
-                app_num int PRIMARY KEY, 
-                introduction char(300),
-                FOREIGN KEY(app_num) REFERENCES storeAppTable(app_num))");
-            executePlainSQL("CREATE TABLE resumeTable (
-                app_num int PRIMARY KEY, 
-                name char(30), 
-                experience char(300), 
-                education char(300),
-                FOREIGN KEY(app_num) REFERENCES storeAppTable(app_num))");
-            executePlainSQL("CREATE TABLE interviewTable (
-                interviewer char(30), 
-                interviewee char(30), 
-                intDate int, 
-                PRIMARY KEY (interviewer, interviewee, intDate))");
-            
-
-            executeBoundSQL("insert into jobTable values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7)", getDefaultJobTuples());
-            executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", getDefaultInterviewTuples());
-            executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", getDefaultAccountTuples());
-            executeBoundSQL("insert into storeAppTable values (:bind1, :bind2, :bind3)", getDefaultAppTuples());
-            executeBoundSQL("insert into resumeTable values (:bind1, :bind2, :bind3, :bind4)", getDefaultResumeTuples());
-            executeBoundSQL("insert into coverTable values (:bind1, :bind2)", getDefaultCoverTuples());
-
-            echo "<br> SUCCESS: default tuples inserted for all tuples<br>";
-            OCICommit($db_conn);
-        }
-
         function handleInsertInterviewRequest() {
             global $db_conn;
             $tuple = array (
@@ -417,8 +446,8 @@
         
         // HANDLE ALL POST REQUESTS
         // This is where all post statements will print
-        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) 
-            || isset($_POST['insertSubmitAccount']) || isset($_POST['updateSubmitAddy']) || isset($_POST['updateSubmitPhone']) ) {
+        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) || isset($_POST['insertSubmitAccount']) || 
+            isset($_POST['updateSubmitAddy']) || isset($_POST['updateSubmitPhone'])) {
             handlePOSTRequest();
         } 
 
@@ -434,7 +463,10 @@
                     handleInsertInterviewRequest();
                 } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
                     handleInsertAccountRequest();
+                } else if (array_key_exists('filterCatRequest', $_POST)) {
+                    handleFilterRequest();
                 } 
+
                 disconnectFromDB();
             }
         }
@@ -457,9 +489,7 @@
                 disconnectFromDB();
             }
         }
-
-        
-
+        //print_r($_POST)
         ?>
     </body>
 </html>
