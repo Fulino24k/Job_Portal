@@ -15,6 +15,7 @@
             <button onclick="upcomingInterviews()">Upcoming Interviews</button>
             <button onclick="acceptDeny()">Accept/Deny Offer</button>
             <button onclick="manageAccount()">Manage Account</button>
+            <button onclick="extraInfo()">Extra Information</button>
         </div>
 
         <div id="filterGroup" style="display: none" class="none">
@@ -50,10 +51,32 @@
                 document.getElementById('printInterviewForm').submit(); }
 
             function acceptDeny() {
-               document.getElementById('printOfferForm').submit(); }
+                // TODO
+            }
 
             function manageAccount() {
                 document.getElementById('manageAccForm').submit(); }
+            
+            function extraInfo(){
+                document.getElementById('printExInfo').submit();
+            }
+
+            function getAG(){
+                document.getElementById('printAggregateGroup').submit();
+            }
+
+            function getAH(){
+                document.getElementById('printAggregateHaving').submit();
+            }
+
+            function getNS(){
+                document.getElementById('printNested').submit();
+            }
+
+            function getDivi(){
+                document.getElementById('printDivision').submit();
+            }
+
         </script>
 
         
@@ -62,8 +85,9 @@
 
         // HANDLE ALL GET REQUESTS
         // this is the position where all requests are printed
-        if (isset($_GET['printRequest']) || isset($_GET['manageRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestOffer'])
-            || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest'])) {
+        if (isset($_GET['printRequest']) || isset($_GET['manageRequest']) || isset($_GET['printRequestInterview']) 
+            || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest']) || isset($_GET['printExInfo']) || isset($_GET['aggregateGroup']) || isset($_GET['aggregateHaving'])
+            || isset($_GET['nested']) || isset($_GET['division'])){
             handleGETRequest();
         }
         if (isset($_POST['filterCat'])) {
@@ -75,6 +99,11 @@
             echo "<div><button onclick='createAcc()'>Create an Account</button><button onclick='updateAddy()'>Update Address</button><button onclick='updatePhone()'>Update Phone Number</button></div>";
         }
 
+        function printInfoButtons() {
+            echo "Please choose an option from below: <br><br>";
+            echo "<div><button onclick='getAG()'>Average Salary By Type of Work</button><button onclick='getAH()'>Jobs With Salaries Above $50,000</button>
+            <button onclick='getNS()'>Positions With The Highest Average Salaries</button><button onclick='getDivi()'>Jobs With Less Than 20 Spots Left</button></div>";
+        }
 
         // one result will only allow for one fetch from OCI, so only one while loop for printing
         function handlePrintJobListing() {
@@ -122,22 +151,6 @@
             }
             echo "</table>";
         }
-
-        function handlePrintOffer() {
-            global $db_conn;
-            $result = executePlainSQL("SELECT * FROM AcceptDenyOffer");
-            echo "<b>All Offers:</b><br><br>";
-            echo "<table>";
-            echo "<tr><th>Employee #</th><th>Start Date</th><th>Email</th></tr>";
-
-            //  AcceptDenyOffer(offer_employee_num, StartDate, applicant_email)
-            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>";
-                echo $row["OFFER_EMPLOYEE_NUM"] . "</td><td>" . $row["STARTDATE"] . "</td><td>" . $row["APPLICANT_EMAIL"] . "</td></tr>";
-            }
-            echo "</table>";
-        }
-
 
         function handlePrintAccount() {
             global $db_conn;
@@ -237,7 +250,7 @@
                     $row['JOB_APP_NUM'] . "</a>" . "</td><td>" . $row["APPLYDATE"] . "</td><td>" . $row["ACCOUNT_ACC_NUM_SA"] . "</td></tr>";
             }
             echo "</table>";
-        } 
+        }
 
         function printApplicationCover($result) {
             echo "<br><b>Retrieved data from table coverTable:</b><br><br>";
@@ -263,10 +276,85 @@
             }
             echo "</table>";
         }
+
+        function printAggregateGroup() {
+            global $db_conn;
+            $query = executePlainSQL("SELECT ShiftSchedule, AVG(Salary) FROM JR1_ScheduleSalary GROUP BY ShiftSchedule");
+            echo "<b>Print Aggregate Group Query:</b><br><br>";
+            while ($row = OCI_Fetch_Array($query, OCI_BOTH)) {
+                echo $row['SHIFTSCHEDULE'] . ', ' . $row['AVG(SALARY)'] . '<br>';
+            }
+            echo "</table>";
+        }
+
+        function printNested() {
+            global $db_conn;
+            $query = executePlainSQL("SELECT PositionName, ShiftSchedule, aves
+            FROM (
+                SELECT p.PositionName, ss.ShiftSchedule, AVG(Salary) AS aves
+                FROM JR1_ScheduleSalary ss
+                JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule
+                JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.ReferenceID
+                JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
+                JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications
+                JOIN JR5_PositionDuties p ON dq.duties = p.Duties
+                GROUP BY p.PositionName, ss.ShiftSchedule
+            ) nested
+            WHERE aves = (SELECT MAX(aves) FROM (
+                SELECT p.PositionName, AVG(Salary) AS aves
+                FROM JR1_ScheduleSalary ss
+                JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule
+                JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.ReferenceID
+                JOIN JR9_ID_Qualifications q ON sn.referenceID = q.ReferenceID
+                JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications
+                JOIN JR5_PositionDuties p ON dq.duties = p.Duties
+                GROUP BY p.PositionName
+            ))");
+            echo "<b>Print Aggregate Nested Query:</b><br><br>";
+            while ($row = OCI_Fetch_Array($query, OCI_BOTH)) {
+                echo $row['POSITIONNAME'] . ', ' . $row['SHIFTSCHEDULE'] . ', ' . $row['AVES'] .'<br>';
+            }
+            echo "</table>";
+        }
+
+        function printAggregateHaving() {
+            global $db_conn;
+            $query = executePlainSQL("SELECT ss.ShiftSchedule, p.PositionName, AVG(Salary)
+            FROM JR1_ScheduleSalary ss JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule
+            JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.ReferenceID JOIN JR9_ID_Qualifications q
+            ON sn.referenceID = q.ReferenceID JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications
+            JOIN JR5_PositionDuties p ON dq.duties = p.Duties
+            GROUP BY ss.ShiftSchedule, p.PositionName
+            HAVING AVG(Salary) > 50000");
+            echo "<b>Print Aggregate Group Query:</b><br><br>";
+            while ($row = OCI_Fetch_Array($query, OCI_BOTH)) {
+                echo $row['SHIFTSCHEDULE'] . ', ' . $row['POSITIONNAME'] . ', ' . $row['AVG(SALARY)'] .'<br>';
+            }
+            echo "</table>";
+        }
+
+        function printDivision() {
+            global $db_conn;
+            $query = executePlainSQL("SELECT p.PositionName, sn.num_of_Spots, ss.Salary, ss.ShiftSchedule
+            FROM JR1_ScheduleSalary ss JOIN JR10_ID_Shift s ON ss.ShiftSchedule = s.ShiftSchedule
+            JOIN JR3_ID_SpotNum sn ON s.ReferenceID = sn.ReferenceID JOIN JR9_ID_Qualifications q
+            ON sn.referenceID = q.ReferenceID JOIN JR7_DutyQualifications dq ON q.Qualifications = dq.Qualifications
+            JOIN JR5_PositionDuties p ON dq.duties = p.Duties
+            WHERE q.ReferenceID IN (
+                (SELECT q.ReferenceID FROM JR9_ID_Qualifications
+                 MINUS
+                 SELECT sn.referenceID FROM JR3_ID_SpotNum
+                 WHERE sn.num_of_Spots >= 20)
+            )");
+            while ($row = OCI_Fetch_Array($query, OCI_BOTH)) {
+                echo $row['POSITIONNAME'] . ', ' . $row['NUM_OF_SPOTS'] . ', ' . $row['SALARY'] . ', ' . $row['SHIFTSCHEDULE'] . '<br>';
+            }
+            echo "</table>";
+        }
+
         // END OF ALL PRINTING GET FUNCTIONS
         ?>
         <br>
-        
         <!-- button group for managing account UNUSED -->
         <div id="accountOptions" style="display: none" class="none">
             <button onclick="createAcc()">Create an Account</button>
@@ -277,6 +365,7 @@
         <!-- javascript for managing account button group -->
         <script>
             show = false;
+
             function createAcc() {
                 var accGroup = document.getElementById('accountGroup');
                 var addyGroup = document.getElementById('addyGroup');
@@ -365,17 +454,6 @@
             IntDate: <input type="text" name="insIntDate>"> <br /><br />
             <input type="submit" value="Insert" name="insertSubmitInterview"></p>
         </form>
-
-        <!-- form for inserting offer items -->
-        <form id="insertOffer" style="display: none" method="POST" action="project.php"> 
-            <input type="hidden" id="insertOfferQueryRequest" name="insertOfferQueryRequest">
-            Employee Number: <input type="text" name="insNum"> <br /><br />
-            Start Date: <input type="text" name="insStart"> <br /><br />
-            Applicant Email: <input type="text" name="insEmail>"> <br /><br />
-            <input type="submit" value="Insert" name="insertSubmitOffer"></p>
-        </form>
-
-
         <!-- form for updating address -->
         <form id="updateAccount" style="display: none" method="POST" action="project.php"> 
             <input type="hidden" id="updateAddyRequest" name="updateAddyRequest">
@@ -413,14 +491,34 @@
             <input type="hidden" name="printInterview"></p>
         </form>
 
-        <form id="printOfferForm" method="GET" action="project.php"> 
-            <input type="hidden" id="printRequestOffer" name="printRequestOffer">
-            <input type="hidden" name="printOffer"></p>
-        </form>
-
         <form id="printAccount" style="display: none" method="GET" action="project.php"> 
             <input type="hidden" id="printRequestAccount" name="printRequestAccount">
             <input type="submit" value="Print Account Tables"name="printAccount"></p>
+        </form>
+
+        <form id="printExInfo" style="display: none" method="GET" action="project.php"> 
+            <input type="hidden" id="printExInfo" name="printExInfo">
+            <input type="hidden" value="Print Extra Info"name="exInfo"></p>
+        </form>
+
+        <form id="printAggregateGroup" style="display: none" method="GET" action="project.php"> 
+            <input type="hidden" id="aggregateGroup" name="aggregateGroup">
+            <input type="hidden" value="Print Extra Info"name="ag"></p>
+        </form>
+
+        <form id="printAggregateHaving" style="display: none" method="GET" action="project.php"> 
+            <input type="hidden" id="aggregateHaving" name="aggregateHaving">
+            <input type="hidden" value="Print Extra Info"name="ah"></p>
+        </form>
+
+        <form id="printNested" style="display: none" method="GET" action="project.php"> 
+            <input type="hidden" id="aggNested" name="nested">
+            <input type="hidden" value="Print Extra Info"name="ns"></p>
+        </form>
+
+        <form id="printDivision" style="display: none" method="GET" action="project.php"> 
+            <input type="hidden" id="division" name="division">
+            <input type="hidden" value="Print Extra Info"name="divi"></p>
         </form>
         <!-- ----------------------------------------------------- -->
 
@@ -439,20 +537,6 @@
                 $tuple
             );
             executeBoundSQL("insert into interviewTable values (:bind1, :bind2, :bind3)", $alltuples);
-            OCICommit($db_conn);
-        }
-
-        function handleInsertOfferRequest() {
-            global $db_conn;
-            $tuple = array (
-                ":bind1" => $_POST['insNum'],
-                ":bind2" => $_POST['insStart'],
-                ":bind3" => $_POST['insEmail'],
-            );
-            $alltuples = array (
-                $tuple
-            );
-            executeBoundSQL("insert into offerTable values (:bind1, :bind2, :bind3)", $alltuples);
             OCICommit($db_conn);
         }
 
@@ -491,7 +575,7 @@
         
         // HANDLE ALL POST REQUESTS
         // This is where all post statements will print
-        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) || isset($_POST['insertSubmitAccount']) || isset($_POST['insertSubmitOffer']) || 
+        if (isset($_POST['resetAll']) || isset($_POST['insertSubmitInterview']) || isset($_POST['insertSubmitAccount']) || 
             isset($_POST['updateSubmitAddy']) || isset($_POST['updateSubmitPhone'])) {
             handlePOSTRequest();
         } 
@@ -506,8 +590,6 @@
                     handlePhoneUpdateRequest(); 
                 } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
                     handleInsertInterviewRequest();
-                } else if (array_key_exists('insertOfferQueryRequest', $_POST)) {
-                    handleInsertOfferRequest();
                 } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
                     handleInsertAccountRequest();
                 } else if (array_key_exists('filterCatRequest', $_POST)) {
@@ -526,14 +608,22 @@
                     handlePrintJobListing();
                 } else if (array_key_exists('printInterview', $_GET)) {
                     handlePrintInterview();
-                } else if (array_key_exists('printOffer', $_GET)) {
-                    handlePrintOffer();
                 } else if (array_key_exists('printAccount', $_GET)) {
                     handlePrintAccount();
                 } else if (array_key_exists('printApp', $_GET)) {
                     handlePrintPastApplication();
                 } else if (array_key_exists('manageAcc', $_GET)) {
                     printManageButtons();
+                } else if(array_key_exists('exInfo', $_GET)) {
+                    printInfoButtons();
+                } else if(array_key_exists('ag', $_GET)) {
+                    printAggregateGroup();
+                } else if(array_key_exists('ah', $_GET)) {
+                    printAggregateHaving();
+                } else if(array_key_exists('ns', $_GET)) {
+                    printNested();
+                } else if(array_key_exists('divi', $_GET)) {
+                    printDivision();
                 }
                 disconnectFromDB();
             }
