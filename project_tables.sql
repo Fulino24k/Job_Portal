@@ -123,9 +123,6 @@ FOREIGN KEY(job_num) REFERENCES StoreApplication(job_app_num)
 
 grant select on Resumes to public;
 
-
-
-
 CREATE TABLE AcceptDenyOffer(
 offer_employee_num INTEGER PRIMARY KEY,
 StartDate INTEGER,
@@ -140,7 +137,7 @@ offer_employee_num INTEGER,
 emp_employee_num INTEGER,
 PRIMARY KEY(offer_employee_num, emp_employee_num),
 FOREIGN KEY(offer_employee_num) REFERENCES AcceptDenyOffer(offer_employee_num) ON DELETE CASCADE,
-FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num) 
+FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
 
 grant select on Draft to public;
@@ -612,11 +609,11 @@ VALUES(4, 4444);
 INSERT INTO Creates(job_referID, emp_employee_num)
 VALUES(5, 5555);
 
--- INSERT INTO Creates(job_referID, emp_employee_num)
--- VALUES(6, 6666);
+INSERT INTO Creates(job_referID, emp_employee_num)
+VALUES(6, 2222);
 
--- INSERT INTO Creates(job_referID, emp_employee_num)
--- VALUES(7, 6666);
+INSERT INTO Creates(job_referID, emp_employee_num)
+VALUES(7, 2222);
 
 -- Supervisor
 
