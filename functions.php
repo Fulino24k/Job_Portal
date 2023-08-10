@@ -17,7 +17,7 @@ function connectToDB() {
 
     // Your username is ora_(CWL_ID) and the password is a(student number). For example,
     // ora_platypus is the username and a12345678 is the password.
-    $db_conn = OCILogon("ora_daniren", "a86258282", "dbhost.students.cs.ubc.ca:1522/stu");
+    $db_conn = OCILogon("ora_fulino", "a72201767", "dbhost.students.cs.ubc.ca:1522/stu");
 
     if ($db_conn) {
         debugAlertMessage("Database is Connected");
@@ -252,6 +252,31 @@ function handleResetAccountRequest() {
     executeBoundSQL("insert into accountTable values (:bind1, :bind2, :bind3, :bind4, :bind5)", $allAccounttuples);
     echo "<br> default tuples inserted <br>";
     OCICommit($db_conn);
+}
+
+// PRINT TABLE COVER LETTER 
+function printApplicationCover($result) {
+    echo "<br><b>Retrieved tableData from table coverTable:</b><br><br>";
+    echo "<table>";
+    echo "<tr><th>Application #</th><th>Intro</th></tr>";
+
+    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        echo "<tr><td>";
+        echo $row["JOB_APP_NUM_CV"] . "</td><td>" . $row["INTRODUCTION"] . "</td></tr>";
+    }
+    echo "</table>";
+}
+// PRINT TABLE RESUME
+function printApplicationResume($result) {
+    echo "<br><b>Retrieved tableData from table resumeTable:</b><br><br>";
+    echo "<table>";
+    echo "<tr><th>Application #</th><th>Name</th><th>Experience</th><th>Education</th></tr>";
+
+    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+        echo "<tr><td>";
+        echo $row["JOB_NUM"] . "</td><td>" . $row["RESNAME"] . "</td><td>" . $row["EXPERIENCE"] . "</td><td>" . $row["EDUCATION"] . "</td></tr>";
+    }
+    echo "</table>";
 }
 
 ?>
