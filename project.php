@@ -121,7 +121,7 @@
 
         // HANDLE ALL GET REQUESTS
         // this is the position where all requests are printed
-        if (isset($_GET['printRequest']) || isset($_GET['manageRequest']) || isset($_GET['printRequestInterview']) 
+        if (isset($_GET['printRequest']) || isset($_GET['manageRequest']) || isset($_GET['manageButtonRequest']) || isset($_GET['printRequestInterview']) || isset($_GET['printRequestOffer'])
             || isset($_GET['printRequestAccount'])|| isset($_GET['printAppRequest'])) {
             handleGETRequest();
         }
@@ -758,8 +758,7 @@
         // UPDATE PHONE
         function handlePhoneUpdateRequest() {
             global $db_conn;
-            $old_phone = $_POST['oldPhone'];
-            $new_phone = $_POST['newPhone'];
+            $emp_num = $_POST['empNum'];
             // you need the wrap the old name and new name values with single quotations
             executePlainSQL("UPDATE Applicant SET phone_num='" . $new_phone . "' WHERE phone_num='" . $old_phone . "'");
             echo "<b>SUCCESS</b>: phone number updated!";
@@ -792,7 +791,7 @@
         } 
         if (isset($_POST['insertSubmitOffer']) || isset($_POST['updateSubmitDeny'])) {
             handlePOSTRequest();
-        } 
+        }
 
         function handlePOSTRequest() {
             if (connectToDB()) {
@@ -801,9 +800,11 @@
                 } else if (array_key_exists('updateAddyRequest', $_POST)) {
                     handleAddressUpdateRequest();
                 } else if (array_key_exists('updatePhoneQueryRequest', $_POST)) {
-                    handlePhoneUpdateRequest(); 
+                    handlePhoneUpdateRequest();  
                 } else if (array_key_exists('insertInterviewQueryRequest', $_POST)) {
                     handleInsertInterviewRequest();
+                } else if (array_key_exists('insertOfferQueryRequest', $_POST)) {
+                    handleInsertOfferRequest();
                 } else if (array_key_exists('insertAccountQueryRequest', $_POST)) {
                     handleInsertAccountRequest();
                 } else if (array_key_exists('filterCatRequest', $_POST)) {
@@ -831,6 +832,9 @@
                     handlePrintJobListing();
                 } else if (array_key_exists('printInterview', $_GET)) {
                     handlePrintInterview();
+                } else if (array_key_exists('printOffer', $_GET)) {
+                    handlePrintOffer();
+                    acceptDenyButtons();
                 } else if (array_key_exists('printAccount', $_GET)) {
                     handlePrintAccount();
                 } else if (array_key_exists('printApp', $_GET)) {

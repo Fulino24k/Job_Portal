@@ -136,7 +136,7 @@ CREATE TABLE Draft(
 offer_employee_num INTEGER,
 emp_employee_num INTEGER,
 PRIMARY KEY(offer_employee_num, emp_employee_num),
-FOREIGN KEY(offer_employee_num) REFERENCES AcceptDenyOffer(offer_employee_num),
+FOREIGN KEY(offer_employee_num) REFERENCES AcceptDenyOffer(offer_employee_num) ON DELETE CASCADE,
 FOREIGN KEY(emp_employee_num) REFERENCES R3_EmployeeNumName(employee_num)
 );
 
